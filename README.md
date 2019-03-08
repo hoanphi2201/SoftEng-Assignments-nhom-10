@@ -1,4 +1,4 @@
-# Software engineering Assignments - nhom-10
+# Software engineering assignments - nhom-10
 
 ##### Use ip address: 13.229.130.250:6969
 
