@@ -154,9 +154,9 @@
 * 200 - OK
 * 400 - Bad Request
 * 500 - Internal Server Error
-#### DELETE /admin.groups/[id]
+#### DELETE /admin/groups/[id]
   http://13.229.130.250:6969/admin/groups/5c750cb195033604111f2c06
-#### DELETE /admin.groups
+#### DELETE /admin/groups
   http://13.229.130.250:6969/admin/groups
   
   Request body:
