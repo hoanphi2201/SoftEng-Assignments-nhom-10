@@ -5,6 +5,14 @@
 ## Groups user
 #### GET /admin/groups/[status]/[sort_field]/[sort_type]
   Example: http://13.229.130.250:6969/admin/groups/active/name/asc
+  
+  URL Params: 
+  
+ * [status]: all, active, inactive
+    
+ * [sort_field]: name, status, created.time, modified.time
+    
+ * [sort_type]: asc, desc
 
   Response body:
 ```
