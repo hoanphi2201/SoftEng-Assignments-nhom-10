@@ -1,0 +1,19 @@
+
+.mat-form-field {
+    display: block;
+    position: relative;
+    text-align: left;
+}
+label.has-error{
+    color: #f44336;
+}
+@media (min-width: 992px) {
+    .col-md-2 {
+        width: 20%;
+    }
+}
+
+.mat-input-container{
+    margin-top: 12px;
+}
+

@@ -1,0 +1,9 @@
+
+.mat-form-field {
+    display: block;
+    position: relative;
+    text-align: left;
+}
+label.has-error{
+    color: #f44336;
+}

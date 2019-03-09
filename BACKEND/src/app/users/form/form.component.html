@@ -1,0 +1,105 @@
+<form  class="form-horizontal">
+    <div class="card-header card-header-text" data-background-color="rose">
+        <h4 class="card-title">Add New User</h4>
+    </div>
+    <div class="card-content">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group label-floating" >
+                    <label class="control-label" >Full Name:
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            type="text"
+                            id="name"
+                            class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6" >
+                <div class="form-group label-floating" >
+                    <label class="control-label" for="name">Email:
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            type="text"
+                            id="email"
+                            class="form-control">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-sm-12" >
+                <label >Avatar
+                    <span class="star">*</span>
+                </label>
+                <div  class="fileinput fileinput-new text-center" data-provides="fileinput">
+                    <div  class="fileinput-new thumbnail img-circle">
+                        <img  src="../../assets/img/placeholder.jpg" >
+                    </div>
+                    <div  [innerHTML]="'12345.png' | avatar : '':'/users/' :'no-avatar.png'" class="fileinput-new thumbnail img-circle"></div>
+                    <div class="fileinput-preview fileinput-exists thumbnail img-circle"></div>
+                    <div>
+                        <span class="btn btn-round btn-rose btn-file">
+                            <span class="fileinput-new">Add Photo</span>
+                            <span class="fileinput-exists">Change</span>
+                            <input  type="file"
+                                    name="avatar"/>
+                        </span>
+                        <a  #clearfileinput class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6" style="margin-top: 105px">
+                <div class="form-group label-floating" >
+                    <label class="control-label">Ordering
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            type="number"
+                            id="ordering"
+                            class="form-control">
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6" >
+                <mat-form-field>
+                    <mat-select placeholder="Status *" >
+                        <mat-option *ngFor="let status of statuses" [value]="status.value">
+                            {{status.viewValue|capitalize}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+            <div class="col-sm-12 col-md-6" >
+                <mat-form-field>
+                    <mat-select placeholder="Group *"  >
+                        <mat-option *ngFor="let group of groups" [value]="group._id" >
+                            {{group.name|capitalize}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label >Content
+                    <span class="star">*</span>
+                </label>
+                <ckeditor
+                        [config]="ckeConfig"
+                        [readonly]="false"
+                        debounce="1000">
+                </ckeditor>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer text-center">
+        <button (click)="onSubmitUser()" type="button" class="btn btn-primary btn-round" ><i class="material-icons">person_add</i> Submit</button>
+    </div>
+</form>

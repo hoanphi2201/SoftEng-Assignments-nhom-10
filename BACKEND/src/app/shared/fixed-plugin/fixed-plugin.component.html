@@ -1,0 +1,61 @@
+<div class="fixed-plugin">
+    <div class="dropdown open  {{classShow}}" >
+        <a (click)="classShow =  classShow == '' ? 'show' : ''" aria-expanded="true" href="javascript:void(0)">
+            <i class="fa fa-cog fa-2x"></i>
+        </a>
+        <ul [style.display] = " classShow === '' ? 'none' : ''" class="dropdown-menu" style="position: absolute; will-change: top, left; top: 10px; left: -306px;" >
+            <li class="header-title"> Sidebar Filters</li>
+            <li class="adjustments-line">
+                <a class="switch-trigger active-color" href="javascript:void(0)" style=" text-align: center;">
+                    <div class="ml-auto mr-auto">
+                        <span *ngFor="let color of  arrColorActiveSideBar"
+                              [ngClass]="{'active':colorActiveSideBar === color}"
+                              (click)="handleChangeColorSideBar(color)"
+                              class="badge filter badge-{{color}}">
+
+                        </span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="ripple-container"></div>
+                </a>
+            </li>
+
+            <li class="header-title">Sidebar Background</li>
+            <li  class="adjustments-line">
+                <a  class="switch-trigger background-color" href="javascript:void(0)" style=" text-align: center;">
+                    <div  class="ml-auto mr-auto">
+                        <span *ngFor="let bgr of arrBgrSidebar"
+                              class="badge filter badge-{{bgr}}"
+                              [ngClass]="{'active':colorBgrSideBar === bgr}"
+                              (click)="handleChangeBgrSideBar(bgr)"
+                        ></span>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </li>
+            <li class="header-title">Images</li>
+            <li *ngFor=" let img of arrImgSideBar" [ngClass]="{'active':imgSideBar === img}" >
+                <a  class="img-holder switch-trigger" href="javascript:void(0)">
+                    <img (click)="handleChangeImgSideBar($event)"  alt="{{img}}" src="{{img}}">
+                </a>
+            </li>
+
+            <li class="button-container">
+                <div >
+                    <button class="btn btn-info btn-block btn-fill" data-target="#buy" data-toggle="modal"> Button </button>
+                </div>
+            </li>
+            <li class="button-container">
+                <div >
+                    <button class="btn btn-warning btn-block btn-fill" data-target="#buy" data-toggle="modal"> Button </button>
+                </div>
+            </li>
+            <li class="button-container text-center" routerlinkactive="active">
+                <div >
+                    <a class="btn btn-default btn-block" href="/material-dashboard-angular2/documentation/tutorial"> Button </a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div>

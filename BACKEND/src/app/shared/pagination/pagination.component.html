@@ -1,0 +1,17 @@
+<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+    <li class="hidden-xs" appHover [ngClass]="{disabled:pager.currentPage === 1}">
+        <a (click)="setPage(1)">First</a>
+    </li>
+    <li appHover [ngClass]="{disabled:pager.currentPage === 1}">
+        <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+    </li>
+    <li appHover *ngFor="let page of pager.pages; let i = index "  [ngClass]="{active:pager.currentPage === page}">
+        <a *ngIf="page >= pager.min && page <= pager.max" (click)="setPage(page)">{{page}} </a>
+    </li>
+    <li appHover [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+        <a (click)="setPage(pager.currentPage + 1)">Next</a>
+    </li>
+    <li class="hidden-xs" appHover [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+        <a (click)="setPage(pager.totalPages)">Last</a>
+    </li>
+</ul>

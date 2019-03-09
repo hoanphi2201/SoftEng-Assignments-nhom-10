@@ -1,0 +1,23 @@
+
+<div class="wrapper">
+    <div class="sidebar" [attr.data-background-color]="bgrColor" [attr.data-active-color]="activeColor">
+        <app-sidebar-cmp></app-sidebar-cmp>
+        <div class="sidebar-background"[style.backgroundImage]="'url('+ imgSidebar +')'"></div>
+    </div>
+
+    <div class="main-panel">
+        <app-navbar-cmp></app-navbar-cmp>
+        <router-outlet></router-outlet>
+        <div *ngIf="!isMap()">
+            <app-footer-cmp></app-footer-cmp>
+        </div>
+    </div>
+    <app-plugin
+            [activeColor]="activeColor"
+            [bgrColor] = "bgrColor"
+            [imgSidebar] = "imgSidebar"
+            (changeImage) = "handleChangeImgSidebar($event)"
+            (changeActiveColor) =  "handleChangeActiveColorSideBar($event)"
+            (changeBgrColor) = "handleChangeBgrColorSideBar($event)"
+    ></app-plugin>
+</div>

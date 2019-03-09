@@ -1,0 +1,56 @@
+div.dataTables_length select {
+    width: 80px;
+    display: inline-block;
+}
+.pagination > .disabled > a{
+    background-color: #ddd !important;
+    color: #ffffff;
+}
+.mat-form-field {
+    display: block;
+    position: relative;
+    text-align: left;
+}
+.material-datatables{
+    overflow-y: auto;
+}
+
+.fa-xs{
+    font-size: 16px;
+}
+.is-hovering {
+    cursor: pointer;
+}
+
+.modal .modal-header .close {
+    color: #999999;
+}
+.modal-header .close-pdf {
+    margin-top: -2px;
+}
+button.close-pdf {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+}
+.close-pdf {
+    font-size: inherit;
+    color: #FFFFFF;
+    opacity: .9;
+    text-shadow: none;
+}
+.close-pdf {
+    float: right;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+    margin-right: 20px;
+}
+
+

@@ -1,0 +1,141 @@
+/*!
+
+ =========================================================
+ * Material Dashboard PRO Angular CLI - V1.4.6
+ =========================================================
+
+ * Product Page: https://www.creative-tim.com/product/material-dashboard-pro-angular2
+ * Copyright 2017 Creative Tim (https://www.creative-tim.com)
+ * License Creative Tim (https://www.creative-tim.com/license)
+
+ =========================================================
+
+ */
+ @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+//variables and mixins
+@import "material-dashboard/variables";
+@import "material-dashboard/mixins";
+@import "material-dashboard/shadows";
+@import '../../../node_modules/@angular/material/theming';
+
+//plugin css
+@import "material-dashboard/plugins/plugin-nouislider";
+@import "material-dashboard/plugins/animate";
+@import "material-dashboard/plugins/sweetalert2";
+@import "material-dashboard/plugins/datatables.net";
+@import "material-dashboard/plugins/jquery.jvectormap";
+@import "material-dashboard/plugins/plugin-datetime-picker";
+@import "material-dashboard/plugins/fullcalendar";
+@import "material-dashboard/plugins/wizard-card";
+@import "material-dashboard/plugins/chartist";
+@import "material-dashboard/plugins/select-bootstrap";
+
+
+// Core CSS
+@import "material-dashboard/typography";
+@import "material-dashboard/sidebar-and-main-panel";
+@import "material-dashboard/buttons";
+@import "material-dashboard/misc";
+@import "material-dashboard/inputs";
+@import "material-dashboard/fileupload";
+@import "material-dashboard/alerts";
+@import "material-dashboard/tables";
+@import "material-dashboard/forms";
+@import "material-dashboard/checkboxes";
+@import "material-dashboard/radios";
+@import "material-dashboard/progress";
+@import "material-dashboard/togglebutton";
+@import "material-dashboard/pages";
+@import "material-dashboard/tags";
+@import "material-dashboard/timeline";
+@import "material-dashboard/ripples";
+@import "material-dashboard/panels";
+@import "material-dashboard/pagination";
+@import "material-dashboard/labels";
+@import "material-dashboard/pills";
+@import "material-dashboard/dialogs";
+@import "material-dashboard/navbars";
+@import "material-dashboard/popups";
+@import "material-dashboard/footers";
+
+// Fancy Stuff
+@import "material-dashboard/dropdown";
+@import "material-dashboard/cards";
+@import "material-dashboard/tabs";
+@import "material-dashboard/responsive";
+
+// Demo Purpose
+@import "material-dashboard/fixed-plugin";
+
+.ct-legend {
+ position: relative;
+ z-index: 10;
+ li {
+  position: relative;
+  padding-left: 23px;
+  margin-bottom: 3px;
+ }
+
+ li:before {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  left: 0;
+  content: '';
+  border: 3px solid transparent;
+  border-radius: 2px;
+ }
+
+ li.inactive:before {
+  background: transparent;
+ }
+
+ &.ct-legend-inside {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+ }
+
+ @for $i from 0 to length($ct-series-colors) {
+  .ct-series-#{$i}:before {
+   background-color: nth($ct-series-colors, $i + 1);
+   border-color: nth($ct-series-colors, $i + 1);
+  }
+ }
+}
+.ct-chart {
+ position: relative;
+}
+.ct-tooltip {
+ position: absolute;
+ display: inline-block;
+ min-width: 5em;
+ padding: 8px 10px;
+ background: #383838;
+ color: #fff;
+ text-align: center;
+ pointer-events: none;
+ z-index: 100;
+ transition: opacity .2s linear;
+  border-radius: 5px;
+}
+.ct-tooltip:before {
+ position: absolute;
+ bottom: -14px;
+ left: 50%;
+ border: solid transparent;
+ content: ' ';
+ height: 0;
+ width: 0;
+ pointer-events: none;
+ border-color: rgba(251, 249, 228, 0);
+ border-top-color: #383838;
+ border-width: 7px;
+ margin-left: -8px;
+}
+.ct-tooltip.hide {
+ display: block;
+ opacity: 0;
+ visibility: hidden;
+}
