@@ -65,9 +65,8 @@ export class ListComponent implements OnInit {
             .subscribe(
                 data => {
                     this.allItems = data;
+                    showNotification('top','right',1000,'Have ' + this.allItems.length + ' exam(s)');
                     this.setPage(this.pager.currentPage);
-                    console.log(this.pagedItems);
-                    
                 },
                 error => this.reloadPageIfError(),
                 () => {
@@ -82,7 +81,7 @@ export class ListComponent implements OnInit {
     setPage(page: number) {
         this.pager = this.pagerService.getPager(this.allItems.length, page, this.tablesLength);
         this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
-        showNotification('top','right',1000,'Have ' + this.pagedItems.length + ' exam(s) in this page');
+        
     }
 
     /*------------------------------------------------------------

@@ -126,13 +126,15 @@
                                     </div>
                                 </td>
                                 <td class="hidden-name-sm">{{item.name}}</td>
-                                <!-- <td class="hidden-name-md td-actions">
+                                <td class="hidden-name-md td-actions">
                                     <button type="button"
                                             class="btn btn-primary
-                                             btn-round">
+                                             btn-round"
+                                             matTooltip="{{item.name | capitalize}}" [matTooltipPosition]="'above'">
                                         <i  class="material-icons">drag_indicator</i>
                                     </button>
-                                </td> -->
+                                    
+                                </td>
                                 <!-- <td appHover  [innerHTML]="'12345.png' | avatar : 'width: 40px; height: 40px' : '/exams/':'no-thumb.png'"></td> -->
                                 <td>
                                     <button class="btn btn-xs btn-primary">{{item.status}}</button>
