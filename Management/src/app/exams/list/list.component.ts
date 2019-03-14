@@ -29,7 +29,6 @@ export class ListComponent implements OnInit {
     exams: IExam[] = [];
     subjects: ISubject[];
 
-
     statuses: any[] = [
         { value: 'active', viewValue: 'active' },
         { value: 'inactive', viewValue: 'inactive' },
@@ -55,8 +54,8 @@ export class ListComponent implements OnInit {
     }
 
     /*------------------------------------------------------------
-   | Get exam subject: string status: string, sort_field: string, sort_type: string, keyword: string
-   ---------------------------------------------------------------*/
+    | Get exam subject: string status: string, sort_field: string, sort_type: string, keyword: string
+    ---------------------------------------------------------------*/
     getItems(subject: string, status: string, sort_field: string, sort_type: string, keyword: string) {
         this.ngProgress.start();
         /*-------------------------------
@@ -78,8 +77,8 @@ export class ListComponent implements OnInit {
 
 
     /*------------------------------------------------------------
-   | Get subjects: string status: string, sort_field: string, sort_type: string, keyword: string
-   ---------------------------------------------------------------*/
+    | Get subjects: string status: string, sort_field: string, sort_type: string, keyword: string
+    ---------------------------------------------------------------*/
     getSubject() {
         this.ngProgress.start();
         /*-------------------------------
@@ -100,23 +99,23 @@ export class ListComponent implements OnInit {
 
 
     /*------------------------------------------------------------
-   | Set up items display in paged
-   ---------------------------------------------------------------*/
+    | Set up items display in paged
+    ---------------------------------------------------------------*/
     setPage(page: number) {
         this.pager = this.pagerService.getPager(this.allItems.length, page, this.tablesLength);
         this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
     }
 
     /*------------------------------------------------------------
-   | Click number pagination
-   ---------------------------------------------------------------*/
+    | Click number pagination
+    ---------------------------------------------------------------*/
     onClickSetPage(e) {
         this.setPage(e);
     }
 
     /*------------------------------------------------------------
-  | Click option delete exam
-  ---------------------------------------------------------------*/
+    | Click option delete exam
+    ---------------------------------------------------------------*/
     onClickDeleteExam(_id) {
         console.log(_id);
         this.setPage(this.pager.currentPage);
@@ -133,7 +132,20 @@ export class ListComponent implements OnInit {
     filterExams() {
         this.loading = true;
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
-        this.keyword = '';
+    }
+
+    /*------------------------SORT--------------------------*/
+    sortExamsBy(sortField) {
+        console.log(sortField);
+        this.sortType = this.sortType == 'asc' ? 'desc' : 'asc';
+        this.sortField = sortField;
+        this.loading = true;
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+    displaySortType(sortField) {
+        if(sortField == this.sortField) 
+            return this.sortType == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc';
+        return '';
     }
 
     reloadPageIfError() {
