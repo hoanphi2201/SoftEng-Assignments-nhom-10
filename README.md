@@ -2,12 +2,6 @@
 
 ##### Use ip address: 13.229.130.250:6969
 
-## Branch
-  * feature-1: Phí Xuân Hoàn
-  * feature-2: Trần Tiến Đức
-  * feature-3: Lê Công Kỳ
-  * feature-4: Nguyễn Trường Giang
-
 ## Groups user
 #### GET /admin/groups/[status]/[sort_field]/[sort_type]
   Example: http://13.229.130.250:6969/admin/groups/active/name/asc
