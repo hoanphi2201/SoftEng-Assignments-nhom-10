@@ -102,7 +102,7 @@ export class ListComponent implements OnInit {
     | Set up items display in paged
     ---------------------------------------------------------------*/
     setPage(page: number) {
-        this.pager = this.pagerService.getPager(this.allItems.length, page, this.tablesLength);
+        this.pager = this.pagerService.getPager(this.allItems.length, page, +this.tablesLength);
         this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
     }
 
@@ -136,9 +136,9 @@ export class ListComponent implements OnInit {
 
     /*------------------------SORT--------------------------*/
     sortExamsBy(sortField) {
-        console.log(sortField);
         this.sortType = this.sortType == 'asc' ? 'desc' : 'asc';
         this.sortField = sortField;
+
         this.loading = true;
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
     }
