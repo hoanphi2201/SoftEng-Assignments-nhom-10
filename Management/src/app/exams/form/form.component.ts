@@ -67,7 +67,8 @@ export class FormComponent implements OnInit {
     | isFieldValid(form: FormGroup, field: string) touched && !valid
     ----------------------------------------------------------------*/
     isFieldValid(form: FormGroup, field: string) {
-        return !form.get(field).valid && form.get(field).touched;
+        // return !form.get(field).valid && form.get(field).touched;
+        return true;
     }
     /*--------------------------------------------------------------
    | displayFieldCss(form: FormGroup, field: string)
