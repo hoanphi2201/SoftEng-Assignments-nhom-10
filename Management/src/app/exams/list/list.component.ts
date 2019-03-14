@@ -26,18 +26,16 @@ export class ListComponent implements OnInit {
     sortType: string = 'desc';
     sortField: string = 'name';
     keyword: string = '';
-    subjects: ISubject[] = [];
     exams: IExam[] = [];
-
+    subjects: ISubject[];
 
     statuses: any[] = [
         { value: 'active', viewValue: 'active' },
         { value: 'inactive', viewValue: 'inactive' },
     ];
 
-    
     dataTablesLength: number[] = [5, 10, 20, 50, 100];
-    tablesLength: number = 10;private allItems: IExam[];
+    tablesLength: number = 10; private allItems: IExam[];
     pager: any = {};
     pagedItems: IExam[];
 
@@ -52,10 +50,12 @@ export class ListComponent implements OnInit {
         public ngProgress: NgProgress) { }
     ngOnInit(): void {
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+        this.getSubject();
     }
+
     /*------------------------------------------------------------
-   | Get exam subject: string status: string, sort_field: string, sort_type: string, keyword: string
-   ---------------------------------------------------------------*/
+    | Get exam subject: string status: string, sort_field: string, sort_type: string, keyword: string
+    ---------------------------------------------------------------*/
     getItems(subject: string, status: string, sort_field: string, sort_type: string, keyword: string) {
         this.ngProgress.start();
         /*-------------------------------
@@ -65,7 +65,7 @@ export class ListComponent implements OnInit {
             .subscribe(
                 data => {
                     this.allItems = data;
-                    showNotification('top','right',1000,'Have ' + this.allItems.length + ' exam(s)');
+                    showNotification('top', 'right', 1000, 'Have ' + this.allItems.length + ' exam(s)');
                     this.setPage(this.pager.currentPage);
                 },
                 error => this.reloadPageIfError(),
@@ -75,29 +75,77 @@ export class ListComponent implements OnInit {
                 });
     }
 
+
     /*------------------------------------------------------------
-   | Set up items display in paged
-   ---------------------------------------------------------------*/
+    | Get subjects: string status: string, sort_field: string, sort_type: string, keyword: string
+    ---------------------------------------------------------------*/
+    getSubject() {
+        this.ngProgress.start();
+        /*-------------------------------
+        | Todo: Get groups
+        ---------------------------------*/
+        this._subjectService.getItems('all', 'name', 'asc', '')
+            .subscribe(
+                data => {
+                    this.subjects = data;
+                    showNotification('top', 'right', 1000, 'Have ' + this.subjects.length + ' subject(s)');
+                },
+                error => this.reloadPageIfError(),
+                () => {
+                    this.ngProgress.done();
+                    this.loading = false;
+                });
+    }
+
+
+    /*------------------------------------------------------------
+    | Set up items display in paged
+    ---------------------------------------------------------------*/
     setPage(page: number) {
         this.pager = this.pagerService.getPager(this.allItems.length, page, this.tablesLength);
         this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
-        
     }
 
     /*------------------------------------------------------------
-   | Click number pagination
-   ---------------------------------------------------------------*/
+    | Click number pagination
+    ---------------------------------------------------------------*/
     onClickSetPage(e) {
         this.setPage(e);
     }
 
-     /*------------------------------------------------------------
-   | Click option delete exam
-   ---------------------------------------------------------------*/
+    /*------------------------------------------------------------
+    | Click option delete exam
+    ---------------------------------------------------------------*/
     onClickDeleteExam(_id) {
         console.log(_id);
         this.setPage(this.pager.currentPage);
         console.log(this.pagedItems);
+    }
+
+    /*-------------------------------------------------------*/
+    onChangeDataTableLength() {
+        this.loading = true;
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+
+    /*-------------------------------------------------------*/
+    filterExams() {
+        this.loading = true;
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+
+    /*------------------------SORT--------------------------*/
+    sortExamsBy(sortField) {
+        console.log(sortField);
+        this.sortType = this.sortType == 'asc' ? 'desc' : 'asc';
+        this.sortField = sortField;
+        this.loading = true;
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+    displaySortType(sortField) {
+        if(sortField == this.sortField) 
+            return this.sortType == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc';
+        return '';
     }
 
     reloadPageIfError() {

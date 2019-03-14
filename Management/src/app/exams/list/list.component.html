@@ -10,7 +10,8 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-4">
                             <mat-form-field>
-                                <mat-select placeholder="Choosen Status" [(ngModel)]="statusSelect">
+                                <mat-select placeholder="Choosen Status" [(ngModel)]="statusSelect"
+                                    (change)="filterExams()">
                                     <mat-option value="all">
                                         Choose Status
                                     </mat-option>
@@ -22,7 +23,8 @@
                         </div>
                         <div class="col-sm-6 col-md-offset-4 col-md-4">
                             <mat-form-field>
-                                <mat-select placeholder="Choosen Subject" [(ngModel)]="subjectSelect">
+                                <mat-select placeholder="Choosen Subject" [(ngModel)]="subjectSelect"
+                                    (change)="filterExams()">
                                     <mat-option value="allvalue">
                                         Choose Subject
                                     </mat-option>
@@ -38,7 +40,8 @@
                             <div class="dataTables_length">
                                 <label class="form-group">
                                     Show
-                                    <select class="form-control">
+                                    <select class="form-control" [(ngModel)]="tablesLength"
+                                        (change)="onChangeDataTableLength()">
                                         <option *ngFor="let item of dataTablesLength" [value]="item"
                                             [selected]="item == tablesLength">
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item}}</option>
@@ -48,8 +51,8 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-offset-4 col-md-4">
-                            <input type="search" class="form-control" placeholder="Search records"
-                                [(ngModel)]="keyword">
+                            <input type="search" class="form-control" placeholder="Search records" [(ngModel)]="keyword"
+                                (keyup.enter)="filterExams()">
                         </div>
                     </div>
                     <div class="row">
@@ -103,14 +106,28 @@
                                         </label>
                                     </div>
                                 </th>
-                                <th appHover class="text-center" width="14%">Name <i class="fa fa-fw fa-xs"></i></th>
+                                <th appHover class="text-center" width="14%" (click)="sortExamsBy('name')">Name
+                                    <i  class="fa fa-fw fa-xs fa-sort"
+                                        [ngClass]="displaySortType('name')"></i></th>
                                 <!-- <th appHover class="text-center" >Thumb <i  class="fa fa-fw fa-xs" ></i></th> -->
-                                <th appHover class="text-center">Status <i class="fa fa-fw fa-xs"></i></th>
-                                <th appHover class="text-center">Special <i></i></th>
-                                <th appHover class="text-center">Question <i class="fa fa-fw fa-xs"></i></th>
-                                <th appHover class="text-center">Subject <i class="fa fa-fw fa-xs"></i></th>
-                                <th appHover class="text-center">Created <i class="fa fa-fw fa-xs"></i></th>
-                                <th appHover class="text-center">Modified <i class="fa fa-fw fa-xs"></i></th>
+                                <th appHover class="text-center" (click)="sortExamsBy('status')">Status
+                                    <i  class="fa fa-fw fa-xs fa-sort"
+                                        [ngClass]="displaySortType('status')"></i></th>
+                                <th appHover class="text-center"(click)="sortExamsBy('special')">Special
+                                        <i  class="fa fa-fw fa-xs fa-sort"
+                                            [ngClass]="displaySortType('special')"></i></th>
+                                <th appHover class="text-center"(click)="sortExamsBy('number_questions')">Question
+                                        <i  class="fa fa-fw fa-xs fa-sort"
+                                            [ngClass]="displaySortType('number_questions')"></i></th>
+                                <th appHover class="text-center"(click)="sortExamsBy('subject.name')">Subject
+                                        <i  class="fa fa-fw fa-xs fa-sort"
+                                            [ngClass]="displaySortType('subject.name')"></i></th>
+                                <th appHover class="text-center" (click)="sortExamsBy('created.time')">Created
+                                    <i  class="fa fa-fw fa-xs fa-sort"
+                                        [ngClass]="displaySortType('created.time')"></i></th>
+                                <th appHover class="text-center" (click)="sortExamsBy('modified.time')">Modified
+                                    <i  class="fa fa-fw fa-xs fa-sort"
+                                        [ngClass]="displaySortType('modified.time')"></i></th>
                                 <th class="text-right">Actions</th>
                             </tr>
                         </thead>
@@ -127,13 +144,12 @@
                                 </td>
                                 <td class="hidden-name-sm">{{item.name}}</td>
                                 <td class="hidden-name-md td-actions">
-                                    <button type="button"
-                                            class="btn btn-primary
-                                             btn-round"
-                                             matTooltip="{{item.name | capitalize}}" [matTooltipPosition]="'above'">
-                                        <i  class="material-icons">drag_indicator</i>
+                                    <button type="button" class="btn btn-primary
+                                             btn-round" matTooltip="{{item.name | capitalize}}"
+                                        [matTooltipPosition]="'above'">
+                                        <i class="material-icons">drag_indicator</i>
                                     </button>
-                                    
+
                                 </td>
                                 <!-- <td appHover  [innerHTML]="'12345.png' | avatar : 'width: 40px; height: 40px' : '/exams/':'no-thumb.png'"></td> -->
                                 <td>
