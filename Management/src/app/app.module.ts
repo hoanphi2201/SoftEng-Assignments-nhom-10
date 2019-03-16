@@ -52,6 +52,7 @@ import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { AppRoutes } from './app.routing';
 import { DateTimePickerModule } from 'ng-pick-datetime';
 import {AuthGuard} from './shared/guards/auth.guard';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   exports: [
@@ -104,6 +105,7 @@ export class MaterialModule {}
         NavbarModule,
         FooterModule,
         FixedPluginModule,
+        HttpClientModule
     ],
     declarations: [
         AppComponent,

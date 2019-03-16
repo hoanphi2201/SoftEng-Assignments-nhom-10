@@ -1,48 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-
-// Statics
-import 'rxjs/add/observable/throw';
-import {HttpHeaders} from '@angular/common/http';
 import {IExam} from '../defines/exam';
 import {AppSettings} from '../helper/app.setting';
+import {showNotification} from "../helper/notification";
+import {Observable, of} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {catchError, tap} from "rxjs/operators";
 
 
 @Injectable()
 export class ExamsService {
     private apiUrl = `${AppSettings.API_ENDPOINT}/admin/exam`;
-    headers = new Headers({ 'Content-Type': 'application/json' });
-    options = new RequestOptions({ headers: this.headers,  withCredentials: true });
-    constructor(private _httpService: Http) {
+    headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    options = { headers: this.headers,  withCredentials: true };
+    constructor(private _httpService: HttpClient) {
 
     }
     getItems(group: string, status: string, sort_field: string, sort_type: string,  keyword: string ): Observable<IExam[]> {
         return this._httpService.get(`${this.apiUrl}/${group}/${status}/${sort_field}/${sort_type}/?keyword=${keyword}`, {
             withCredentials: true
-        }).map(this.extractData).catch(this.handleError);
+        }).pipe(
+            tap(_ => {}),
+            catchError(this.handleError<any>('getItems'))
+        );
     }
-
-
-    private extractData(res: Response) {
-        return res.json() || { };
+    private handleError<T> (operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+            showNotification('top', 'right', 100, 'Server errors !');
+            console.log(`${operation} failed: ${error.message}`);
+            return of(result as T);
+        };
     }
-
-
-    private handleError (error: Response | any) {
-
-        let errMsg: string;
-        if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-            errMsg = error.message ? error.message : error.toString();
-        }
-        return Observable.throw(errMsg);
-    }
-
 }

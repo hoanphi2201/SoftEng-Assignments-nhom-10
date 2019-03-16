@@ -1,53 +1,60 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import {Observable} from 'rxjs/Observable';
 import {AppSettings} from '../helper/app.setting';
+import {showNotification} from "../helper/notification";
+import {Observable, of} from "rxjs";
+import {catchError, tap} from "rxjs/operators";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private _httpService: Http) { }
+    constructor(private _httpService: HttpClient) { }
     login(username: string, password: string): Observable<any> {
         return this._httpService.post(`${AppSettings.API_ENDPOINT}/auth/user/login`, {  username: username, password: password }, {
             withCredentials: true
-        }).map(this.extractData).catch(this.handleError);
+        }).pipe(
+            tap(_ => {}),
+            catchError(this.handleError<any>('login'))
+        );
 
     }
     logout() {
         return this._httpService.get(`${AppSettings.API_ENDPOINT}/auth/user/logout`, {
             withCredentials: true
-        }).map(this.extractData).catch(this.handleError);
+        }).pipe(
+            tap(_ => {}),
+            catchError(this.handleError<any>('logout'))
+        );
     }
     // isLogin() {
     //     return this._httpService.get(`${AppSettings.API_ENDPOINT}/auth/user/islogin`, {
     //         withCredentials: true
-    //     }).map(this.extractData).catch(this.handleError);
+    //     }).pipe(
+    //             tap(_ => {}),
+    //             catchError(this.handleError<any>(' isLogin'))
+    //         );
     // }
     loginFacebook(data: any): Observable<any> {
         return this._httpService.post(`${AppSettings.API_ENDPOINT}/auth/user/login-facebook`, data, {
             withCredentials: true
-        }).map(this.extractData).catch(this.handleError);
+        }).pipe(
+            tap(_ => {}),
+            catchError(this.handleError<any>('loginFacebook'))
+        );
 
     }
     loginGoogle(data: any): Observable<any> {
         return this._httpService.post(`${AppSettings.API_ENDPOINT}/auth/user/login-google`, data, {
             withCredentials: true
-        }).map(this.extractData).catch(this.handleError);
-
+        }).pipe(
+            tap(_ => {}),
+            catchError(this.handleError<any>('loginGoogle'))
+        );
     }
-    private extractData(res: Response) {
-        return res.json() || { };
-    }
-    private handleError (error: Response | any) {
-        let errMsg: string;
-        if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-            errMsg = error.message ? error.message : error.toString();
-        }
-        return Observable.throw(errMsg);
+    private handleError<T> (operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+            showNotification('top', 'right', 100, 'Server errors !');
+            console.log(`${operation} failed: ${error.message}`);
+            return of(result as T);
+        };
     }
 }
