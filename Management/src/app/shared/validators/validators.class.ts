@@ -39,7 +39,7 @@ export class IValidators {
                             }
                             return resolve(null);
                         };
-                        image.src = fr.result;
+                        image.src = (fr.result).toString();
                     };
                     fr.readAsDataURL(input.value[0]);
                 } else {
