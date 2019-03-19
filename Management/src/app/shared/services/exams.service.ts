@@ -23,6 +23,23 @@ export class ExamsService {
             catchError(this.handleError<any>('getItems'))
         );
     }
+
+    changeStatus(id: string, objUpdate: IExam): Observable<IExam> {
+        return this._httpService.put(`${this.apiUrl}/change-status/${id}`, objUpdate)
+            .pipe(
+                tap(_ => {}),
+                catchError(this.handleError<any>('changeStatus'))
+            );
+    }
+
+    changeSpecial(id: string, objUpdate: IExam): Observable<IExam> {
+        return this._httpService.put(`${this.apiUrl}/change-special/${id}`, objUpdate)
+            .pipe(
+                tap(_ => {}),
+                catchError(this.handleError<any>('changeSpecial'))
+            );
+    }
+
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             showNotification('top', 'right', 100, 'Server errors !');

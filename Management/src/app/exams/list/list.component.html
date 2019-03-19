@@ -153,10 +153,12 @@
                                 </td>
                                 <!-- <td appHover  [innerHTML]="'12345.png' | avatar : 'width: 40px; height: 40px' : '/exams/':'no-thumb.png'"></td> -->
                                 <td>
-                                    <button class="btn btn-xs btn-primary">{{item.status}}</button>
+                                    <button  class="btn btn-xs btn-primary"
+                                            (click)="changeStatus(item._id, item.status)">{{item.status}}</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-xs btn-warning">{{item.special}}</button>
+                                    <button  class="btn btn-xs btn-warning"
+                                            (click)="changeSpecial(item._id, item.special)">{{item.special}}</button>
                                 </td>
                                 <td class="text-center">{{item.number_questions}}</td>
                                 <td>{{item.subject.name}}</td>

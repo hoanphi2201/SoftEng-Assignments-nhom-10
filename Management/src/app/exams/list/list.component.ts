@@ -14,6 +14,7 @@ declare const $: any;
 import swal from "sweetalert2";
 import { Router } from '@angular/router';
 import { NgProgress } from 'ngx-progressbar';
+import {Time} from '@angular/common';
 @Component({
     selector: 'exams-list',
     templateUrl: './list.component.html',
@@ -58,6 +59,7 @@ export class ListComponent implements OnInit {
     ---------------------------------------------------------------*/
     getItems(subject: string, status: string, sort_field: string, sort_type: string, keyword: string) {
         this.ngProgress.start();
+        this.loading = true;
         /*-------------------------------
         | Todo: Get groups
         ---------------------------------*/
@@ -88,7 +90,6 @@ export class ListComponent implements OnInit {
             .subscribe(
                 data => {
                     this.subjects = data;
-                    showNotification('top', 'right', 1000, 'Have ' + this.subjects.length + ' subject(s)');
                 },
                 error => this.reloadPageIfError(),
                 () => {
@@ -124,13 +125,11 @@ export class ListComponent implements OnInit {
 
     /*-------------------------------------------------------*/
     onChangeDataTableLength() {
-        this.loading = true;
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
     }
 
     /*-------------------------------------------------------*/
     filterExams() {
-        this.loading = true;
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
     }
 
@@ -139,13 +138,68 @@ export class ListComponent implements OnInit {
         this.sortType = this.sortType == 'asc' ? 'desc' : 'asc';
         this.sortField = sortField;
 
-        this.loading = true;
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
     }
     displaySortType(sortField) {
         if(sortField == this.sortField) 
             return this.sortType == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc';
         return '';
+    }
+
+    changeStatus(id, status) {
+        this.ngProgress.start();
+        this.loading = true;
+        const objExam: any = {
+            status: status,
+            modified: {
+                user_id: 'admin',
+                user_name: 'admin',
+                time: Date.now()
+            }
+        };
+        this._examService.changeStatus(id, objExam)
+            .subscribe(
+                data => {
+                    this.pagedItems.map((exam, i) => {
+                        if (exam._id === id) {
+                            const newStatus = this.pagedItems[i].status === 'active' ? 'inactive' : 'active';
+                            this.pagedItems[i].status = newStatus;
+                        }
+                    });
+                },
+                error => this.reloadPageIfError(),
+                () => {
+                    this.ngProgress.done();
+                    this.loading = false;
+                });
+    }
+
+    changeSpecial(id, special) {
+        this.ngProgress.start();
+        this.loading = true;
+        const objExam: any = {
+            special: special,
+            modified: {
+                user_id: 'admin',
+                user_name: 'admin',
+                time: Date.now()
+            }
+        };
+        this._examService.changeSpecial(id, objExam)
+            .subscribe(
+                data => {
+                    this.pagedItems.map((exam, i) => {
+                        if (exam._id === id) {
+                            const newSpecial = this.pagedItems[i].special === 'active' ? 'inactive' : 'active';
+                            this.pagedItems[i].special = newSpecial;
+                        }
+                    });
+                },
+                error => this.reloadPageIfError(),
+                () => {
+                    this.ngProgress.done();
+                    this.loading = false;
+                });
     }
 
     reloadPageIfError() {
