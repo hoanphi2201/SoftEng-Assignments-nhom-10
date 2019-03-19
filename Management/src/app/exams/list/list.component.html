@@ -65,19 +65,19 @@
                                 <ul class="dropdown-menu dropdown-menu-left">
                                     <li class="dropdown-header">Dropdown header</li>
                                     <li>
-                                        <a href="javascript:void(0)">Active</a>
+                                        <a appHover (click)="clickOnChangeMulti('status','active')">Active</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">InActive</a>
+                                        <a appHover (click)="clickOnChangeMulti('status','inactive')">InActive</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">Top Post</a>
+                                        <a appHover (click)="clickOnChangeMulti('special','active')">Top Post</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">Normal</a>
+                                        <a appHover (click)="clickOnChangeMulti('special','inactive')">Normal</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">Delete</a>
+                                        <a appHover href="javascript:void(0)">Delete</a>
                                     </li>
                                 </ul>
                             </div>
@@ -102,7 +102,7 @@
                                 <th>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="optionsCheckboxes">
+                                            <input type="checkbox"  name="optionsCheckboxes">
                                         </label>
                                     </div>
                                 </th>
@@ -138,7 +138,7 @@
                                 <td>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="optionsCheckboxes">
+                                            <input type="checkbox" [(ngModel)]="item.selected" name="optionsCheckboxes">
                                         </label>
                                     </div>
                                 </td>

@@ -67,6 +67,9 @@ export class ListComponent implements OnInit {
             .subscribe(
                 data => {
                     this.allItems = data;
+                    this.allItems.map((item) => {
+                        item.selected = false;
+                    });
                     showNotification('top', 'right', 1000, 'Have ' + this.allItems.length + ' exam(s)');
                     this.setPage(this.pager.currentPage);
                 },
@@ -200,6 +203,49 @@ export class ListComponent implements OnInit {
                     this.ngProgress.done();
                     this.loading = false;
                 });
+    }
+
+
+    clickOnChangeMulti(prop, state) {
+        let arrIdUbdate = [];
+        this.pagedItems.forEach((item) => {
+            if (item.selected) {
+               arrIdUbdate.push(item._id);
+            }
+        });
+
+        if (arrIdUbdate.length === 0) {
+            showAlert('warning', 'Please choosen an exam', 'Click to back in list',
+                false, 'btn btn-warning');
+        } else {
+            this.ngProgress.start();
+            this.loading = true;
+            const objUpdate: any = {
+                action: state,
+                items: arrIdUbdate,
+                modified: {
+                    user_id: 'admin',
+                    user_name: 'admin',
+                    time: Date.now()
+                }
+            };
+            this._examService.changeStatusMulti(objUpdate)
+                .subscribe(
+                    data => {
+                        this.allItems.map(item => {
+                           if (prop === 'status' && item.selected)
+                               item.status = state;
+                           if (prop === 'special' && item.selected)
+                               item.special = state;
+                           item.selected = false;
+                        });
+                    },
+                    error => this.reloadPageIfError(),
+                    () => {
+                        this.ngProgress.done();
+                        this.loading = false;
+                    });
+        }
     }
 
     reloadPageIfError() {
