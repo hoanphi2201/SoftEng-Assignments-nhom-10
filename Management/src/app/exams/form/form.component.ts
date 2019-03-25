@@ -7,6 +7,7 @@ import {SubjectsService} from '../../shared/services/subjects.service';
 import {ckeConfig, validateAllFormFields, getSlug} from '../../shared/helper/config';
 import {Router} from '@angular/router';
 import {NgProgress} from 'ngx-progressbar';
+import {IExam} from '../../shared/defines/exam';
 
 @Component({
     selector: 'exams-form',
@@ -15,10 +16,26 @@ import {NgProgress} from 'ngx-progressbar';
 
 })
 export class FormComponent implements OnInit {
+    constructor(
+        private _formBuilder: FormBuilder,
+        private _examService: ExamsService,
+        private _subjectService: SubjectsService,
+        private router: Router,
+        public ngProgress: NgProgress) {
+    }
+
+    listAnswer: any[] = [];
+    @Input() set seletedExam(seletedExam: IExam) {
+        this.currentExam = seletedExam;
+        if (this.currentExam) {
+            this.simpleSlider = this.currentExam.answers.length;
+        }
+    }
+
     ckeConfig: any;
     selectedThumb: File = null;
     selectedExamPdf: File = null;
-    formAddExam: FormGroup;
+    formExam: FormGroup;
     statuses: any[] = [
         {value: 'active', viewValue: 'active'},
         {value: 'inactive', viewValue: 'inactive'},
@@ -40,19 +57,37 @@ export class FormComponent implements OnInit {
         {value: 5, viewValue: '5 Star'},
     ];
     subjects: ISubject[] = [];
-    simpleSlider: any = 50;
-    isOnlineExam: boolean = false;
+    simpleSlider: any = 0;
+    isOnlineExam = false;
     @Input('userLogin') userLogin: any;
-    constructor(
-        private _formBuilder: FormBuilder,
-        private _examService: ExamsService,
-        private _subjectService: SubjectsService,
-        private router: Router,
-        public ngProgress: NgProgress) {}
+
+    currentExam: IExam;
 
     ngOnInit(): void {
         this.ckeConfig = ckeConfig;
+        this.getSubjects();
+        this.formExam = this._formBuilder.group({
+            name: ['', [Validators.required]],            //, [Validators.required]
+            slug: ['', [Validators.required]],
+            ordering: ['', [Validators.required]],
+            price: ['', [Validators.required]],
+            thumb: [''],
+            exam_pdf: [''],
+            status: ['', [Validators.required]],
+            special: ['', [Validators.required]],
+            subject: ['', [Validators.required]],
+            level: ['', [Validators.required]],
+            rate: ['', [Validators.required]],
+            time: ['', [Validators.required]],
+            timeStart: [''],
+            content: ['', [Validators.required]],
+            onlineExam: [''],
+            isOnlineExam: ['', [Validators.required]],
+            number_questions: ['', [Validators.required]],
+            answer: ['']
+        });
     }
+
     /*--------------------------------------------------------------
     | Get subjects status: string, sort_field: string, sort_type: string, keyword: string
     ----------------------------------------------------------------*/
@@ -60,6 +95,14 @@ export class FormComponent implements OnInit {
         /*-------------------------------
       | Todo: Get subject
       ---------------------------------*/
+        this._subjectService.getItems('all', 'name', 'asc', '')
+            .subscribe(
+                data => {
+                    this.subjects = data;
+                },
+                error => this.reloadPageIfError(),
+                () => {
+                });
     }
 
 
@@ -67,9 +110,9 @@ export class FormComponent implements OnInit {
     | isFieldValid(form: FormGroup, field: string) touched && !valid
     ----------------------------------------------------------------*/
     isFieldValid(form: FormGroup, field: string) {
-        // return !form.get(field).valid && form.get(field).touched;
-        return true;
+        return !form.get(field).valid && form.get(field).touched;
     }
+
     /*--------------------------------------------------------------
    | displayFieldCss(form: FormGroup, field: string)
    ----------------------------------------------------------------*/
@@ -84,20 +127,73 @@ export class FormComponent implements OnInit {
     | onSubmitExam(id: string = '') id === '' => edit && id !== '' => add
     ----------------------------------------------------------------*/
     onSubmitExam(id: string = '') {
-        if (this.formAddExam.valid) {
+        if (this.currentExam._id) {
+            id = this.currentExam._id;
+        }
+        if (this.formExam.valid) {
             const modified = {
                 user_id: this.userLogin._id,
                 user_name: this.userLogin.local.username,
                 time: Date.now()
-            }
+            };
             const created = {
                 user_id: this.userLogin._id,
                 user_name: this.userLogin.local.username,
                 time: Date.now()
-            }
+            };
+            // Create form data to post exam
+            let formData: FormData = new FormData();
+            formData.append('id', id);
+            formData.append('name', this.currentExam.name);
+            formData.append('slug', this.currentExam.slug);
+            formData.append('ordering', this.currentExam.ordering.toString());
+            formData.append('price', this.currentExam.price.toString());
+            formData.append('status', this.currentExam.status);
+            formData.append('special', this.currentExam.special);
+            formData.append('subject_id', this.currentExam.subject.id);
+            formData.append('subject_name', this.currentExam.subject.name);
+            formData.append('level', this.currentExam.level);
+            formData.append('rates', this.currentExam.rates.toString());
+            formData.append('time', this.currentExam.time.toString());
+            formData.append('content', this.currentExam.content);
+            formData.append('onlineExam', this.currentExam.isOnlineExam ? 'online' : 'offline');
         } else {
-            validateAllFormFields(this.formAddExam);
+            validateAllFormFields(this.formExam);
         }
+    }
+
+    onChangeThumb(e) {
+        this.selectedThumb = e.target.files[0];
+    }
+
+    onChangeExamPdf(e) {
+        this.selectedExamPdf = e.target.files[0];
+    }
+
+
+    onChangeNumOfQuestion() {
+        if (this.currentExam.answers.length === 0) {
+            this.currentExam.answers = new Array(this.simpleSlider);
+            for (let i = 0; i < this.simpleSlider; i++) {
+                this.currentExam.answers[i] = {
+                    number: i + 1,
+                    value: ''
+                };
+            }
+        }
+        if (this.currentExam.answers.length > 0) {
+            if (this.currentExam.answers.length < this.simpleSlider) {
+                for (let i = this.currentExam.answers.length; i < this.simpleSlider; i++) {
+                    this.currentExam.answers.push({
+                        number: i + 1,
+                        value: ''
+                    });
+                }
+            } else {
+                this.currentExam.answers = this.currentExam.answers.slice(0, this.simpleSlider);
+            }
+        }
+        console.log(this.currentExam.answers);
     }
 
     reloadPageIfError() {

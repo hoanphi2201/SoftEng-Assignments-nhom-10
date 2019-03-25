@@ -1,20 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PagerService } from './../../shared/services/pager.service';
-import { showNotification, showAlert, SwalConfirm } from './../../shared/helper/notification';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {PagerService} from './../../shared/services/pager.service';
+import {showNotification, showAlert, SwalConfirm} from './../../shared/helper/notification';
 
-import { ExamsService } from '../../shared/services/exams.service';
-import { IExam } from '../../shared/defines/exam';
-import { ISubject } from '../../shared/defines/subject';
-import { SubjectsService } from '../../shared/services/subjects.service';
-import { FileUtil } from '../../shared/helper/file.util';
-import { Constants } from '../../shared/helper/test.constants';
-import { dynamicSort } from '../../shared/helper/config';
+import {ExamsService} from '../../shared/services/exams.service';
+import {IExam} from '../../shared/defines/exam';
+import {ISubject} from '../../shared/defines/subject';
+import {SubjectsService} from '../../shared/services/subjects.service';
+import {FileUtil} from '../../shared/helper/file.util';
+import {Constants} from '../../shared/helper/test.constants';
+import {dynamicSort} from '../../shared/helper/config';
 
 declare const $: any;
-import swal from "sweetalert2";
-import { Router } from '@angular/router';
-import { NgProgress } from 'ngx-progressbar';
+import swal from 'sweetalert2';
+import {Router} from '@angular/router';
+import {NgProgress} from 'ngx-progressbar';
 import {Time} from '@angular/common';
+
 @Component({
     selector: 'exams-list',
     templateUrl: './list.component.html',
@@ -31,24 +32,28 @@ export class ListComponent implements OnInit {
     subjects: ISubject[];
 
     statuses: any[] = [
-        { value: 'active', viewValue: 'active' },
-        { value: 'inactive', viewValue: 'inactive' },
+        {value: 'active', viewValue: 'active'},
+        {value: 'inactive', viewValue: 'inactive'},
     ];
 
     dataTablesLength: number[] = [5, 10, 20, 50, 100];
-    tablesLength: number = 10; private allItems: IExam[];
+    tablesLength: number = 10;
+    private allItems: IExam[];
     pager: any = {};
     pagedItems: IExam[];
 
 
     @Input('userLogin') userLogin: any;
+
     constructor(
         private _examService: ExamsService,
         private pagerService: PagerService,
         private _fileUtil: FileUtil,
         private _subjectService: SubjectsService,
         private router: Router,
-        public ngProgress: NgProgress) { }
+        public ngProgress: NgProgress) {
+    }
+
     ngOnInit(): void {
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
         this.getSubject();
@@ -67,6 +72,9 @@ export class ListComponent implements OnInit {
             .subscribe(
                 data => {
                     this.allItems = data;
+                    this.allItems.map((item) => {
+                        item.selected = false;
+                    });
                     showNotification('top', 'right', 1000, 'Have ' + this.allItems.length + ' exam(s)');
                     this.setPage(this.pager.currentPage);
                 },
@@ -140,8 +148,9 @@ export class ListComponent implements OnInit {
 
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
     }
+
     displaySortType(sortField) {
-        if(sortField == this.sortField) 
+        if (sortField == this.sortField)
             return this.sortType == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc';
         return '';
     }
@@ -200,6 +209,84 @@ export class ListComponent implements OnInit {
                     this.ngProgress.done();
                     this.loading = false;
                 });
+    }
+
+
+    clickOnChangeMulti(prop, state) {
+        let arrIdUbdate = [];
+        this.pagedItems.forEach((item) => {
+            if (item.selected) {
+                arrIdUbdate.push(item._id);
+            }
+        });
+
+        if (arrIdUbdate.length === 0) {
+            showAlert('warning', 'Please choosen an exam', 'Click to back in list',
+                false, 'btn btn-warning');
+        } else {
+            this.ngProgress.start();
+            this.loading = true;
+            const objUpdate: any = {
+                action: state,
+                items: arrIdUbdate,
+                modified: {
+                    user_id: 'admin',
+                    user_name: 'admin',
+                    time: Date.now()
+                }
+            };
+            this._examService.changeStatusMulti(objUpdate)
+                .subscribe(
+                    data => {
+                        this.allItems.map(item => {
+                            if (prop === 'status' && item.selected)
+                                item.status = state;
+                            if (prop === 'special' && item.selected)
+                                item.special = state;
+                            item.selected = false;
+                        });
+                    },
+                    error => this.reloadPageIfError(),
+                    () => {
+                        this.ngProgress.done();
+                        this.loading = false;
+                    });
+        }
+    }
+
+    @Output() sendExam = new EventEmitter<IExam>();
+    openForm(id) {
+        let exam: IExam = {
+            name: null,
+            status: null,
+            special: null,
+            ordering: null,
+            content: null,
+            thumb: null,
+            exam_pdf: null,
+            slug: null,
+            level: null,
+            rates: null,
+            price: null,
+            onlineExam: null,
+            timeStart: null,
+            answers: [],
+            time: null,
+            subject: {
+                id: null,
+                name: null
+            },
+            number_questions: null
+        };
+        this.allItems.forEach((value, index) => {
+            if (value._id === id) {
+                exam = value;
+                return;
+            }
+        });
+        // Create copy object exam
+        const copyExam = Object.assign({}, exam);
+        this.sendExam.emit(copyExam);
     }
 
     reloadPageIfError() {

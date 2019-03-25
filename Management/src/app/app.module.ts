@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { APP_BASE_HREF } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {
       MatAutocompleteModule,
@@ -50,9 +50,8 @@ import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 
 import { AppRoutes } from './app.routing';
-import { DateTimePickerModule } from 'ng-pick-datetime';
 import {AuthGuard} from './shared/guards/auth.guard';
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   exports: [
@@ -86,8 +85,7 @@ import {HttpClientModule} from "@angular/common/http";
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule,
-      DateTimePickerModule
+    MatTooltipModule
   ]
 })
 export class MaterialModule {}

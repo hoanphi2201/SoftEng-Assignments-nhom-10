@@ -11,7 +11,7 @@
                         <div class="col-sm-6 col-md-4">
                             <mat-form-field>
                                 <mat-select placeholder="Choosen Status" [(ngModel)]="statusSelect"
-                                    (change)="filterExams()">
+                                    (selectionChange)="filterExams()">
                                     <mat-option value="all">
                                         Choose Status
                                     </mat-option>
@@ -24,7 +24,7 @@
                         <div class="col-sm-6 col-md-offset-4 col-md-4">
                             <mat-form-field>
                                 <mat-select placeholder="Choosen Subject" [(ngModel)]="subjectSelect"
-                                    (change)="filterExams()">
+                                    (selectionChange)="filterExams()">
                                     <mat-option value="allvalue">
                                         Choose Subject
                                     </mat-option>
@@ -65,26 +65,27 @@
                                 <ul class="dropdown-menu dropdown-menu-left">
                                     <li class="dropdown-header">Dropdown header</li>
                                     <li>
-                                        <a href="javascript:void(0)">Active</a>
+                                        <a appHover (click)="clickOnChangeMulti('status','active')">Active</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">InActive</a>
+                                        <a appHover (click)="clickOnChangeMulti('status','inactive')">InActive</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">Top Post</a>
+                                        <a appHover (click)="clickOnChangeMulti('special','active')">Top Post</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">Normal</a>
+                                        <a appHover (click)="clickOnChangeMulti('special','inactive')">Normal</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">Delete</a>
+                                        <a appHover href="javascript:void(0)">Delete</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <button class=" btn btn-primary  pull-right" data-toggle="dropdown" data-toggle="modal"
-                                data-target="#noticeModal"><i class="material-icons">person_add</i>&nbsp; Add New
+                                    data-target="#noticeModal"
+                                    (click)="openForm()"><i class="material-icons">person_add</i>&nbsp; Add New
                                 Exam</button>
                         </div>
 
@@ -102,7 +103,7 @@
                                 <th>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="optionsCheckboxes">
+                                            <input type="checkbox"  name="optionsCheckboxes">
                                         </label>
                                     </div>
                                 </th>
@@ -138,7 +139,7 @@
                                 <td>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="optionsCheckboxes">
+                                            <input type="checkbox" [(ngModel)]="item.selected" name="optionsCheckboxes">
                                         </label>
                                     </div>
                                 </td>
@@ -187,7 +188,8 @@
                                     </button>
                                     <button type="button" rel="tooltip" matTooltip="Click to edit exam"
                                         [matTooltipPosition]="'above'" data-toggle="modal" data-target="#noticeModal"
-                                        class="btn btn-success btn-round">
+                                        class="btn btn-success btn-round"
+                                        (click)="openForm(item._id)">
                                         <i class="material-icons">edit</i>
                                     </button>
                                     <button type="button" matTooltip="Click to delete exam"

@@ -14,7 +14,7 @@ export interface IExam {
     onlineExam: string;
     isOnlineExam?: boolean;
     timeStart: Date;
-    answers: any[];
+    answers: any[];  // {number ; value }
     time: number;
     subject: {
         id: string,

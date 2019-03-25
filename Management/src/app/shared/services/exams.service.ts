@@ -24,7 +24,7 @@ export class ExamsService {
         );
     }
 
-    changeStatus(id: string, objUpdate: IExam): Observable<IExam> {
+    changeStatus(id: string, objUpdate: any): Observable<IExam> {
         return this._httpService.put(`${this.apiUrl}/change-status/${id}`, objUpdate)
             .pipe(
                 tap(_ => {}),
@@ -32,11 +32,27 @@ export class ExamsService {
             );
     }
 
-    changeSpecial(id: string, objUpdate: IExam): Observable<IExam> {
+    changeStatusMulti(objUpdate: any[]): Observable<IExam[]> {
+        return this._httpService.put(`${this.apiUrl}/change-status`, objUpdate)
+            .pipe(
+                tap(_ => {}),
+                catchError(this.handleError<any>('changeStatusMulti'))
+            );
+    }
+
+    changeSpecial(id: string, objUpdate: any): Observable<IExam> {
         return this._httpService.put(`${this.apiUrl}/change-special/${id}`, objUpdate)
             .pipe(
                 tap(_ => {}),
                 catchError(this.handleError<any>('changeSpecial'))
+            );
+    }
+
+    changeSpecialMulti(objUpdate: any[]): Observable<IExam[]> {
+        return this._httpService.put(`${this.apiUrl}/change-special`, objUpdate)
+            .pipe(
+                tap(_ => {}),
+                catchError(this.handleError<any>('changeSpecialMulti'))
             );
     }
 

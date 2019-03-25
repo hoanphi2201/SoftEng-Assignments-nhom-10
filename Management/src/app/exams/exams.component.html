@@ -2,6 +2,7 @@
 <div class="main-content">
     <div class="container-fluid">
         <exams-list
+                (sendExam)="getExam($event)"
                 [userLogin]="userLogin"
         ></exams-list>
     </div>
@@ -19,6 +20,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <exams-form
+                                [seletedExam]="selectedExam"
                                 [userLogin]="userLogin"
                         ></exams-form>
                     </div>

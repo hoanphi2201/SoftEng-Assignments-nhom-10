@@ -14,6 +14,7 @@ import {ExamsComponent} from './exams.component';
 import {ExamsService} from '../shared/services/exams.service';
 import {SubjectsService} from '../shared/services/subjects.service';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
+import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 
 
 
@@ -27,6 +28,8 @@ import {PdfViewerModule} from 'ng2-pdf-viewer';
         MaterialModule,
         SharedModule,
         PdfViewerModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule
     ],
     declarations: [
         ExamsComponent,
