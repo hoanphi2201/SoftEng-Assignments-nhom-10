@@ -251,6 +251,7 @@ export class ListComponent implements OnInit {
                     () => {
                         this.ngProgress.done();
                         this.loading = false;
+                        this.selectAll = false;
                     });
         }
     }
