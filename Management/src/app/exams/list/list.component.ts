@@ -1,20 +1,20 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PagerService} from './../../shared/services/pager.service';
-import {showNotification, showAlert, SwalConfirm} from './../../shared/helper/notification';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PagerService } from './../../shared/services/pager.service';
+import { showNotification, showAlert, SwalConfirm } from './../../shared/helper/notification';
 
-import {ExamsService} from '../../shared/services/exams.service';
-import {IExam} from '../../shared/defines/exam';
-import {ISubject} from '../../shared/defines/subject';
-import {SubjectsService} from '../../shared/services/subjects.service';
-import {FileUtil} from '../../shared/helper/file.util';
-import {Constants} from '../../shared/helper/test.constants';
-import {dynamicSort} from '../../shared/helper/config';
+import { ExamsService } from '../../shared/services/exams.service';
+import { IExam } from '../../shared/defines/exam';
+import { ISubject } from '../../shared/defines/subject';
+import { SubjectsService } from '../../shared/services/subjects.service';
+import { FileUtil } from '../../shared/helper/file.util';
+import { Constants } from '../../shared/helper/test.constants';
+import { dynamicSort } from '../../shared/helper/config';
 
 declare const $: any;
 import swal from 'sweetalert2';
-import {Router} from '@angular/router';
-import {NgProgress} from 'ngx-progressbar';
-import {Time} from '@angular/common';
+import { Router } from '@angular/router';
+import { NgProgress } from 'ngx-progressbar';
+import { Time } from '@angular/common';
 
 @Component({
     selector: 'exams-list',
@@ -30,10 +30,11 @@ export class ListComponent implements OnInit {
     keyword: string = '';
     exams: IExam[] = [];
     subjects: ISubject[];
+    selectAll: boolean = false;
 
     statuses: any[] = [
-        {value: 'active', viewValue: 'active'},
-        {value: 'inactive', viewValue: 'inactive'},
+        { value: 'active', viewValue: 'active' },
+        { value: 'inactive', viewValue: 'inactive' },
     ];
 
     dataTablesLength: number[] = [5, 10, 20, 50, 100];
@@ -211,7 +212,7 @@ export class ListComponent implements OnInit {
                 });
     }
 
-
+    /*--------------------------------------------*/
     clickOnChangeMulti(prop, state) {
         let arrIdUbdate = [];
         this.pagedItems.forEach((item) => {
@@ -235,7 +236,7 @@ export class ListComponent implements OnInit {
                     time: Date.now()
                 }
             };
-            this._examService.changeStatusMulti(objUpdate)
+            this._examService.changeMultiOnClick(objUpdate, prop)
                 .subscribe(
                     data => {
                         this.allItems.map(item => {
@@ -250,8 +251,17 @@ export class ListComponent implements OnInit {
                     () => {
                         this.ngProgress.done();
                         this.loading = false;
+                        this.selectAll = false;
                     });
         }
+    }
+
+    /*---------------------------------------------------*/
+
+    checkAllExams() {
+        this.allItems.forEach(item => {
+            item.selected = this.selectAll;
+        });
     }
 
     @Output() sendExam = new EventEmitter<IExam>();

@@ -65,16 +65,16 @@
                                 <ul class="dropdown-menu dropdown-menu-left">
                                     <li class="dropdown-header">Dropdown header</li>
                                     <li>
-                                        <a appHover (click)="clickOnChangeMulti('status','active')">Active</a>
+                                        <a appHover (click)="clickOnChangeMulti('status','active')">Active Status</a>
                                     </li>
                                     <li>
-                                        <a appHover (click)="clickOnChangeMulti('status','inactive')">InActive</a>
+                                        <a appHover (click)="clickOnChangeMulti('status','inactive')">InActive Status</a>
                                     </li>
                                     <li>
-                                        <a appHover (click)="clickOnChangeMulti('special','active')">Top Post</a>
+                                        <a appHover (click)="clickOnChangeMulti('special','active')">Active Special</a>
                                     </li>
                                     <li>
-                                        <a appHover (click)="clickOnChangeMulti('special','inactive')">Normal</a>
+                                        <a appHover (click)="clickOnChangeMulti('special','inactive')">Inactive Special</a>
                                     </li>
                                     <li>
                                         <a appHover href="javascript:void(0)">Delete</a>
@@ -101,9 +101,9 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th>
-                                    <div class="checkbox">
+                                    <div class="checkbox" >
                                         <label>
-                                            <input type="checkbox"  name="optionsCheckboxes">
+                                            <input type="checkbox"  name="optionsCheckboxes" [(ngModel)]="selectAll" (change)="checkAllExams()">
                                         </label>
                                     </div>
                                 </th>
@@ -139,7 +139,7 @@
                                 <td>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" [(ngModel)]="item.selected" name="optionsCheckboxes">
+                                            <input type="checkbox" [(ngModel)]="item.selected" name="optionsCheckboxes" >
                                         </label>
                                     </div>
                                 </td>
