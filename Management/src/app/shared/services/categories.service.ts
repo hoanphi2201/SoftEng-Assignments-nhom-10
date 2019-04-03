@@ -4,8 +4,8 @@ import {ICategory} from '../defines/category';
 import {AppSettings} from '../helper/app.setting';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
-import {showNotification} from "../helper/notification";
 import {catchError, tap} from "rxjs/operators";
+import {Router} from '@angular/router';
 
 
 @Injectable()
@@ -13,7 +13,10 @@ export class CategoriesService {
     private apiUrl = `${AppSettings.API_ENDPOINT}/admin/category`;
     headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     options = { headers: this.headers, withCredentials: true };
-    constructor(private _httpService: HttpClient) {
+    constructor(
+        private _httpService: HttpClient,
+        private router: Router) {
+
     }
 
     getItems(status: string, sort_field: string, sort_type: string, keyword: string ): Observable<ICategory[]> {
@@ -33,8 +36,7 @@ export class CategoriesService {
     }
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
-            showNotification('top', 'right', 100, 'Server errors !');
-            console.log(`${operation} failed: ${error.message}`);
+            this.router.navigate(['/pages', 'errors']);
             return of(result as T);
         };
     }

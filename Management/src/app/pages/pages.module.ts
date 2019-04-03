@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import {MatTooltipModule} from '@angular/material';
 import {SharedModule} from '../shared/share.module';
 import {AuthenticationService} from '../shared/services/authentication.service';
+import {ErrorsComponent} from './errors/errors.component';
 
 @NgModule({
     imports: [
@@ -30,6 +31,7 @@ import {AuthenticationService} from '../shared/services/authentication.service';
         RegisterComponent,
         PricingComponent,
         LockComponent,
+        ErrorsComponent
     ],
     providers: [
         AuthenticationService,

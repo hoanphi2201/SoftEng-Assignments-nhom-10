@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import {AppSettings} from '../helper/app.setting';
-import {showNotification} from "../helper/notification";
 import {Observable, of} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private _httpService: HttpClient) { }
+    constructor(
+        private _httpService: HttpClient,
+        private router: Router) {
+
+    }
     login(username: string, password: string): Observable<any> {
         return this._httpService.post(`${AppSettings.API_ENDPOINT}/auth/user/login`, {  username: username, password: password }, {
             withCredentials: true
@@ -52,8 +56,7 @@ export class AuthenticationService {
     }
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
-            showNotification('top', 'right', 100, 'Server errors !');
-            console.log(`${operation} failed: ${error.message}`);
+            this.router.navigate(['/pages', 'errors']);
             return of(result as T);
         };
     }

@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
-
 import {ISubject} from '../defines/subject';
 import {AppSettings} from '../helper/app.setting';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
-import {showNotification} from "../helper/notification";
-
+import {Router} from '@angular/router';
 
 @Injectable()
 export class SubjectsService {
     private apiUrl = `${AppSettings.API_ENDPOINT}/admin/subject`;
     headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     options = { headers: this.headers, withCredentials: true };
-    constructor(private _httpService: HttpClient) {
+    constructor(
+        private _httpService: HttpClient,
+        private router: Router) {
+
     }
 
     getItems(status: string, sort_field: string, sort_type: string, keyword: string ): Observable<ISubject[]> {
@@ -26,8 +27,7 @@ export class SubjectsService {
     }
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
-            showNotification('top', 'right', 100, 'Server errors !');
-            console.log(`${operation} failed: ${error.message}`);
+            this.router.navigate(['/pages', 'errors']);
             return of(result as T);
         };
     }

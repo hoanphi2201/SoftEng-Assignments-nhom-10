@@ -4,7 +4,7 @@ import {AppSettings} from '../helper/app.setting';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
-import {showNotification} from "../helper/notification";
+import {Router} from '@angular/router';
 
 
 
@@ -13,7 +13,9 @@ export class ArticlesService {
     private apiUrl = `${AppSettings.API_ENDPOINT}/admin/article`;
     headers = new HttpHeaders({'Content-Type': 'application/json'});
     options = { headers: this.headers , withCredentials: true};
-    constructor(private _httpService: HttpClient) {
+    constructor(
+        private _httpService: HttpClient,
+        private router: Router) {
 
     }
     getItems(group: string, status: string, sort_field: string, sort_type: string,  keyword: string ): Observable<IArticle[]> {
@@ -26,8 +28,7 @@ export class ArticlesService {
     }
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
-            showNotification('top', 'right', 100, 'Server errors !');
-            console.log(`${operation} failed: ${error.message}`);
+            this.router.navigate(['/pages', 'errors']);
             return of(result as T);
         };
     }

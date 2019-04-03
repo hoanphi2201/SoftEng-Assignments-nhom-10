@@ -4,6 +4,7 @@ import { RegisterComponent } from './register/register.component';
 import { PricingComponent } from './pricing/pricing.component';
 import { LockComponent } from './lock/lock.component';
 import { LoginComponent } from './login/login.component';
+import {ErrorsComponent} from './errors/errors.component';
 
 export const PagesRoutes: Routes = [
 
@@ -12,6 +13,9 @@ export const PagesRoutes: Routes = [
         children: [ {
             path: 'login',
             component: LoginComponent
+        }, {
+            path: 'errors',
+            component: ErrorsComponent
         }, {
             path: 'lock',
             component: LockComponent
