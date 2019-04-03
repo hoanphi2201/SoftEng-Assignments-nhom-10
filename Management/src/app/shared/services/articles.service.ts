@@ -32,6 +32,4 @@ export class ArticlesService {
             return of(result as T);
         };
     }
-
-
 }
