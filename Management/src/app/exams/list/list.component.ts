@@ -152,7 +152,6 @@ export class ListComponent implements OnInit {
 
     changeStatus(id, status) {
         this.ngProgress.start();
-        this.loading = true;
         const objExam: any = {
             status: status,
             modified: {
@@ -174,13 +173,13 @@ export class ListComponent implements OnInit {
                 error => this.reloadPageIfError(),
                 () => {
                     this.ngProgress.done();
-                    this.loading = false;
+                    showAlert('success', 'Change Status', 'Success',
+                        false, 'btn btn-success');
                 });
     }
 
     changeSpecial(id, special) {
         this.ngProgress.start();
-        this.loading = true;
         const objExam: any = {
             special: special,
             modified: {
@@ -202,7 +201,8 @@ export class ListComponent implements OnInit {
                 error => this.reloadPageIfError(),
                 () => {
                     this.ngProgress.done();
-                    this.loading = false;
+                    showAlert('success', 'Change Special', 'Success',
+                        false, 'btn btn-success');
                 });
     }
 
@@ -220,7 +220,6 @@ export class ListComponent implements OnInit {
                 false, 'btn btn-warning');
         } else {
             this.ngProgress.start();
-            this.loading = true;
             const objUpdate: any = {
                 action: state,
                 items: arrIdUbdate,
@@ -244,7 +243,8 @@ export class ListComponent implements OnInit {
                     error => this.reloadPageIfError(),
                     () => {
                         this.ngProgress.done();
-                        this.loading = false;
+                        showAlert('success', 'Change All Exam Selected', 'Success',
+                            false, 'btn btn-success');
                         this.selectAll = false;
                     });
         }

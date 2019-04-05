@@ -1,0 +1,311 @@
+<form *ngIf="currentExam" [formGroup]="formExam" class="form-horizontal">
+    <div class="card-header card-header-text" data-background-color="rose">
+        <h4 class="card-title">Add New Exam</h4>
+    </div>
+    <div class="card-content">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label">Name:
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            [(ngModel)]="currentExam.name"
+                            formControlName="name"
+                            type="text"
+                            class="form-control">
+                    <app-field-error-display [displayError]="isFieldValid(formExam,'name')"
+                                             errorMsg="Required"></app-field-error-display>
+
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label"> Slug:
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            [(ngModel)]="currentExam.slug"
+                            formControlName="slug"
+                            type="text"
+                            id="slug"
+                            class="form-control">
+                    <app-field-error-display [displayError]="isFieldValid(formExam,'slug')"
+                                             errorMsg="Required"></app-field-error-display>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label">Ordering
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            [(ngModel)]="currentExam.ordering"
+                            formControlName="ordering"
+                            type="number"
+                            id="ordering"
+                            class="form-control">
+
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label">Price
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            [(ngModel)]="currentExam.price"
+                            formControlName="price"
+                            type="number"
+                            class="form-control">
+                    <app-field-error-display [displayError]="isFieldValid(formExam,'price')"
+                                             errorMsg="Required"></app-field-error-display>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <label>Thumb
+                    <span class="star">*</span>
+                </label>
+                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                    <div class="fileinput-new thumbnail">
+                        <img *ngIf="!currentExam._id" width="200px" height="200px" src="../../assets/img/placeholder.jpg">
+                    </div>
+                    <!--<div *ngIf="currentExam._id" [innerHTML]="currentExam.thumb | avatar : '': '/exams/': 'no-thumb.png'"-->
+                    <!--class="fileinput-new thumbnail"></div>-->
+                    <div class="fileinput-preview fileinput-exists thumbnail "></div>
+                    <!--<input hidden [(ngModel)]="currentExam.thumb" formControlName="imageOld">-->
+                    <div>
+                        <span class="btn btn-round btn-rose btn-file">
+                            <span class="fileinput-new">Add Photo</span>
+                            <span class="fileinput-exists">Change</span>
+                            <input
+                                    (change)="onChangeThumb($event)"
+                                    formControlName="thumb"
+                                    type="file"
+                                    name="thumb">
+
+                        </span>
+                        <a #clearfileinputThumb class="btn btn-danger btn-round fileinput-exists"
+                           data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
+                        <app-field-error-display [displayError]="isFieldValid(formExam,'thumb')"
+                                                 errorMsg="Required"></app-field-error-display>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <label>Exam PDF
+                    <span class="star">*</span>
+                </label>
+                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                    <div class="thumbnail">
+                        <img src="../../assets/img/pdf-view.png">
+                    </div>
+                    <input hidden [(ngModel)]="currentExam.exam_pdf" formControlName="pdfOld">
+                    <div>
+                        <span class="btn btn-round btn-rose btn-file">
+                            <span class="fileinput-new">Add File</span>
+                            <span class="fileinput-exists">Change</span>
+                            <input
+                                    (change)="onChangeExamPdf($event)"
+                                    formControlName="exam_pdf"
+                                    type="file"
+                                    id="file">
+
+                        </span>
+                        <a #clearfileinputPdf class="btn btn-danger btn-round fileinput-exists"
+                           data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
+                        <app-field-error-display [displayError]="isFieldValid(formExam,'exam_pdf')"
+                                                 errorMsg="Required"></app-field-error-display>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <mat-form-field>
+                    <mat-select
+                            [(ngModel)]="currentExam.status"
+                            placeholder="Status *"
+                            formControlName="status">
+                        <mat-option *ngFor="let status of statuses" value="{{status.value}}">
+                            {{status.viewValue|capitalize}}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+                <app-field-error-display [displayError]="isFieldValid(formExam,'status')"
+                                         errorMsg="Required"></app-field-error-display>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <mat-form-field>
+                    <mat-select
+                            [(ngModel)]="currentExam.special"
+                            placeholder="Special *"
+                            formControlName="special">
+
+                        <mat-option *ngFor="let special  of specials" [value]="special.value">
+                            {{special.viewValue|capitalize}}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+                <app-field-error-display [displayError]="isFieldValid(formExam,'special')"
+                                         errorMsg="Required"></app-field-error-display>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <mat-form-field>
+                    <mat-select
+                            [(ngModel)]="currentExam.subject.id"
+                            placeholder="Subject *"
+                            formControlName="subject">
+                        <mat-option *ngFor="let subject of subjects" [value]="subject._id">
+                            {{subject.name|capitalize}}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+                <app-field-error-display [displayError]="isFieldValid(formExam,'subject')"
+                                         errorMsg="Fail"></app-field-error-display>
+
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <mat-form-field>
+                    <mat-select
+                            [(ngModel)]="currentExam.level"
+                            placeholder="Level *"
+                            formControlName="level">
+                        <mat-option *ngFor="let level of levels" [value]="level.value">
+                            {{level.viewValue|capitalize}}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+                <app-field-error-display [displayError]="isFieldValid(formExam,'level')"
+                                         errorMsg="Fail"></app-field-error-display>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <mat-form-field>
+                    <mat-select
+                            [(ngModel)]="currentExam.rates"
+                            placeholder="Rates *"
+                            formControlName="rate">
+                        <mat-option *ngFor="let rate of rates" [value]="rate.value">
+                            {{rate.viewValue}}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+                <app-field-error-display [displayError]="isFieldValid(formExam,'rate')"
+                                         errorMsg="Fail"></app-field-error-display>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label">Time
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            [(ngModel)]="currentExam.time"
+                            formControlName="time"
+                            type="number"
+                            class="form-control">
+                    <app-field-error-display [displayError]="isFieldValid(formExam,'time')"
+                                             errorMsg="Fail"></app-field-error-display>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <label>Content
+                    <span class="star">*</span>
+                </label>
+                <ckeditor
+                        [(ngModel)]="currentExam.content"
+                        formControlName="content"
+                        [config]="ckeConfig"
+                        [readonly]="false"
+                        debounce="1000">
+                </ckeditor>
+                <app-field-error-display [displayError]="isFieldValid(formExam,'content')"
+                                         errorMsg="Fail"></app-field-error-display>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <legend>Exam Online</legend>
+                <div class="togglebutton">
+                    <label>
+                        <input type="checkbox" formControlName="isOnlineExam"
+                               [(ngModel)]="currentExam.isOnlineExam"> {{currentExam.isOnlineExam ? 'Online Exam' :
+                        'Offline Exam'}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="currentExam.isOnlineExam">
+                <div class="form-group label-floating">
+                    <label class="control-label"> Time Exam Start:
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            class="form-control"
+                            name="time"
+                            formControlName="timeStart"
+                            [owlDateTimeTrigger]="dt"
+                            [owlDateTime]="dt"
+                            [(ngModel)]="currentExam.timeStart">
+                    <owl-date-time [pickerMode]="'dialog'" #dt></owl-date-time>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <legend>Number Questions</legend>
+                <nouislider [connect]="false" [min]="0" [max]="100" [step]="5"
+                            [(ngModel)]="simpleSlider"
+                            formControlName="number_questions"
+                            (change)="onChangeNumOfQuestion($event)" name="nouislider" [tooltips]="true" class="slider"></nouislider>
+
+            </div>
+        </div>
+        <div class="row">
+            <legend>Answers</legend>
+            <div  class="col-md-2 col-sm-4" *ngFor="let item of currentExam.answers">
+                <label class="control-label">Question {{item.number}}:
+                    <span class="star">*</span>
+                </label>
+                <input  [value]="item.value"
+                        formControlName="answer"
+                        type="text"
+                        class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer text-center">
+        <button (click)="onSubmitExam()" [disabled]="!formExam.valid"  type="button" class="btn btn-primary btn-round"><i
+                class="material-icons">person_add</i>
+            Submit
+        </button>
+    </div>
+</form>
+
+
+
+
+
+
