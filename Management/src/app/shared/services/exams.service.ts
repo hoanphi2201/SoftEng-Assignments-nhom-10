@@ -32,4 +32,44 @@ export class ExamsService {
             return of(result as T);
         };
     }
+
+    changeStatus(id: string, objUpdate: any): Observable<IExam> {
+        return this._httpService.put(`${this.apiUrl}/change-status/${id}`, objUpdate)
+            .pipe(
+                tap(_ => { }),
+                catchError(this.handleError<any>('changeStatus'))
+            );
+    }
+
+    changeStatusMulti(objUpdate: any[]): Observable<IExam[]> {
+        return this._httpService.put(`${this.apiUrl}/change-status`, objUpdate)
+            .pipe(
+                tap(_ => { }),
+                catchError(this.handleError<any>('changeStatusMulti'))
+            );
+    }
+
+    changeSpecial(id: string, objUpdate: any): Observable<IExam> {
+        return this._httpService.put(`${this.apiUrl}/change-special/${id}`, objUpdate)
+            .pipe(
+                tap(_ => { }),
+                catchError(this.handleError<any>('changeSpecial'))
+            );
+    }
+
+    changeSpecialMulti(objUpdate: any[]): Observable<IExam[]> {
+        return this._httpService.put(`${this.apiUrl}/change-special`, objUpdate)
+            .pipe(
+                tap(_ => { }),
+                catchError(this.handleError<any>('changeSpecialMulti'))
+            );
+    }
+
+    changeMultiOnClick(objUpdate: any, prop): Observable<any> {
+        if (prop === 'status') {
+            return this.changeStatusMulti(objUpdate);
+        } else if (prop === 'special') {
+            return this.changeSpecialMulti(objUpdate);
+        }
+    }
 }
