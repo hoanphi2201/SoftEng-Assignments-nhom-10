@@ -28,6 +28,8 @@ div.dataTables_length select {
 .modal-header .close-pdf {
     margin-top: -2px;
 }
+
+
 button.close-pdf {
     -webkit-appearance: none;
     padding: 0;
