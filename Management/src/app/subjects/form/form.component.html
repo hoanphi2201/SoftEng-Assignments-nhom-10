@@ -1,0 +1,91 @@
+
+<form [formGroup]="formAddSubject" class="form-horizontal">
+    <div class="card-header card-header-text" data-background-color="rose">
+        <h4 class="card-title">Add New Subject</h4>
+    </div>
+    <div class="card-content">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group label-floating" [ngClass]="displayFieldCss(formAddSubject, 'name')">
+                    <label class="control-label" > Name:
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            type="text"
+                            id="name"
+                            class="form-control"
+                            formControlName="name"
+                            [(ngModel)]="subjectSelectEdit.name"
+                            (keyup)="onKeyUpName($event)">
+                    <app-field-error-display [displayError]="isFieldValid(formAddSubject, 'name')" errorMsg="required and min length 6 character.">
+                    </app-field-error-display>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group label-floating" [ngClass]="displayFieldCss(formAddSubject, 'slug', true)">
+                    <label class="control-label" > Slug:
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            type="text"
+                            id="slug"
+                            class="form-control"
+                            formControlName="slug"
+                            [(ngModel)]="subjectSelectEdit.slug">
+                    <app-field-error-display [displayError]="isFieldValid(formAddSubject, 'slug')" errorMsg="required.">
+                    </app-field-error-display>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group label-floating" [ngClass]="displayFieldCss(formAddSubject, 'ordering')">
+                    <label class="control-label">Ordering
+                        <span class="star">*</span>
+                    </label>
+                    <input
+                            type="number"
+                            id="ordering"
+                            class="form-control"
+                            formControlName="ordering"
+                            [(ngModel)]="subjectSelectEdit.ordering">
+                    <app-field-error-display [displayError]="isFieldValid(formAddSubject, 'ordering')" errorMsg="required, is number and elder 1.">
+                    </app-field-error-display>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6" >
+                <mat-form-field>
+                    <mat-select placeholder="Status *" formControlName="status" [(ngModel)]="subjectSelectEdit.status">
+                        <mat-option *ngFor="let status of statuses" [value]="status.value">
+                            {{status.viewValue|capitalize}}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+                <app-field-error-display [displayError]="isFieldValid(formAddSubject, 'status')" errorMsg="required.">
+                </app-field-error-display>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label [ngClass]="displayFieldCss(formAddSubject, 'content')">Content
+                    <span class="star">*</span>
+                </label>
+                <ckeditor
+                        [(ngModel)]="subjectSelectEdit.content"
+                        formControlName="content"
+                        [config]="ckeConfig"
+                        [readonly]="false"
+                        debounce="1000">
+                </ckeditor>
+                <app-field-error-display [displayError]="isFieldValid(formAddSubject, 'content')" errorMsg="required, minlength: 5 and maxlength: 100">
+                </app-field-error-display>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer text-center">
+        <button *ngIf="!edittingSubject" (click)="onSubmitSubject()" type="button" class="btn btn-primary btn-round" ><i class="material-icons">person_add</i> Submit</button>
+        <button *ngIf="edittingSubject" (click)="onSubmitSubject(subjectSelectEdit._id)" type="button" class="btn btn-primary btn-round" ><i class="material-icons">person_add</i> Submit</button>
+    </div>
+</form>

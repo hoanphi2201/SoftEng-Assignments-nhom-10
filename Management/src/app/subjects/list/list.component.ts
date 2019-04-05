@@ -18,25 +18,7 @@ import {NgProgress} from 'ngx-progressbar';
 })
 export class ListComponent implements OnInit {
     loading: boolean = false;
-    pagedItems: any [] = [
-        {
-            "created": {
-                "user_id": "admin",
-                "user_name": "admin",
-                "time": "2019-02-23T05:53:52.146Z"
-            },
-            "modified": {
-                "user_id": "admin",
-                "user_name": "admin",
-                "time": "2019-02-24T15:07:35.562Z"
-            },
-            "_id": "5c70dff09d375610cbc87f44",
-            "name": "Lịch sử",
-            "ordering": 5,
-            "status": "active",
-            "slug": "lich-su"
-        },
-    ]
+    pagedItems: any [] = [];
     statusSelect: string = 'all';
     sortType: string = 'asc';
     sortField: string = 'name';
