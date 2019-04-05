@@ -28,7 +28,7 @@ export class FormComponent implements OnInit {
     @Input() set seletedExam(seletedExam: IExam) {
         if (seletedExam) {
             this.currentExam = seletedExam;
-
+            console.log(this.currentExam);
             if (this.clearfileinputThumb) {
                 this.clearfileinputThumb.nativeElement.click();
             }
@@ -70,6 +70,28 @@ export class FormComponent implements OnInit {
     ngOnInit(): void {
         this.ckeConfig = ckeConfig;
         this.getSubjects();
+        this.formExam = this._formBuilder.group({
+            name: ['', [Validators.required]],
+            slug: ['', [Validators.required]],
+            ordering: ['', [Validators.required]],
+            price: ['', [Validators.required]],
+            thumb: [''],
+            exam_pdf: [''],
+            status: ['', [Validators.required]],
+            special: ['', [Validators.required]],
+            subject: ['', [Validators.required]],
+            level: ['', [Validators.required]],
+            rate: ['', [Validators.required]],
+            time: ['', [Validators.required]],
+            timeStart: [''],
+            content: ['', [Validators.required]],
+            onlineExam: [''],
+            isOnlineExam: ['', [Validators.required]],
+            number_questions: ['', [Validators.required]],
+            answer: [''],
+            imageOld: [''],
+            pdfOld: ['']
+        });
     }
 
     /*--------------------------------------------------------------

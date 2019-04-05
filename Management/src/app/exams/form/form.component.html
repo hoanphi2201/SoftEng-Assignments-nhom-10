@@ -76,10 +76,9 @@
                     <div class="fileinput-new thumbnail">
                         <img *ngIf="!currentExam._id" width="200px" height="200px" src="../../assets/img/placeholder.jpg">
                     </div>
-                    <!--<div *ngIf="currentExam._id" [innerHTML]="currentExam.thumb | avatar : '': '/exams/': 'no-thumb.png'"-->
-                    <!--class="fileinput-new thumbnail"></div>-->
+                    <div *ngIf="currentExam._id" [innerHTML]="currentExam.thumb | avatar : '': '/exams/': 'no-thumb.png'"
+                    class="fileinput-new thumbnail"></div>
                     <div class="fileinput-preview fileinput-exists thumbnail "></div>
-                    <!--<input hidden [(ngModel)]="currentExam.thumb" formControlName="imageOld">-->
                     <div>
                         <span class="btn btn-round btn-rose btn-file">
                             <span class="fileinput-new">Add Photo</span>
