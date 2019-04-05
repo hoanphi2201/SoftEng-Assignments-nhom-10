@@ -75,7 +75,7 @@ export class ListComponent implements OnInit {
                     });
                     showNotification('top', 'right', 1000, 'Have ' + this.allItems.length + ' exam(s)');
                     this.setPage(this.pager.currentPage);
-                    },
+                },
                 error => this.reloadPageIfError(),
                 () => {
                     this.ngProgress.done();
@@ -130,4 +130,11 @@ export class ListComponent implements OnInit {
                 });
         }, 'Server Error !', '500px', 'warning');
     }
+
+    /*-----------------------Lọc, tìm kiếm----------------------------*/
+    filterExams() {
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+
+
 }
