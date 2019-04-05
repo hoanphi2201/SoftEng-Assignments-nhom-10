@@ -75,7 +75,7 @@ export class ListComponent implements OnInit {
                     });
                     showNotification('top', 'right', 1000, 'Have ' + this.allItems.length + ' exam(s)');
                     this.setPage(this.pager.currentPage);
-                    },
+                },
                 error => this.reloadPageIfError(),
                 () => {
                     this.ngProgress.done();
@@ -129,5 +129,132 @@ export class ListComponent implements OnInit {
                     this.router.navigate([this.router.url]);
                 });
         }, 'Server Error !', '500px', 'warning');
+    }
+
+    /*-----------------------Lọc, tìm kiếm----------------------------*/
+    filterExams() {
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+
+    /*------------------------SORT--------------------------*/
+    sortExamsBy(sortField) {
+        this.sortType = this.sortType == 'asc' ? 'desc' : 'asc';
+        this.sortField = sortField;
+
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+
+    displaySortType(sortField) {
+        if (sortField == this.sortField)
+            return this.sortType == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc';
+        return '';
+    }
+
+    changeStatus(id, status) {
+        this.ngProgress.start();
+        this.loading = true;
+        const objExam: any = {
+            status: status,
+            modified: {
+                user_id: 'admin',
+                user_name: 'admin',
+                time: Date.now()
+            }
+        };
+        this._examService.changeStatus(id, objExam)
+            .subscribe(
+                data => {
+                    this.pagedItems.map((exam, i) => {
+                        if (exam._id === id) {
+                            const newStatus = this.pagedItems[i].status === 'active' ? 'inactive' : 'active';
+                            this.pagedItems[i].status = newStatus;
+                        }
+                    });
+                },
+                error => this.reloadPageIfError(),
+                () => {
+                    this.ngProgress.done();
+                    this.loading = false;
+                });
+    }
+
+    changeSpecial(id, special) {
+        this.ngProgress.start();
+        this.loading = true;
+        const objExam: any = {
+            special: special,
+            modified: {
+                user_id: 'admin',
+                user_name: 'admin',
+                time: Date.now()
+            }
+        };
+        this._examService.changeSpecial(id, objExam)
+            .subscribe(
+                data => {
+                    this.pagedItems.map((exam, i) => {
+                        if (exam._id === id) {
+                            const newSpecial = this.pagedItems[i].special === 'active' ? 'inactive' : 'active';
+                            this.pagedItems[i].special = newSpecial;
+                        }
+                    });
+                },
+                error => this.reloadPageIfError(),
+                () => {
+                    this.ngProgress.done();
+                    this.loading = false;
+                });
+    }
+
+    /*--------------------------------------------*/
+    clickOnChangeMulti(prop, state) {
+        let arrIdUbdate = [];
+        this.pagedItems.forEach((item) => {
+            if (item.selected) {
+                arrIdUbdate.push(item._id);
+            }
+        });
+
+        if (arrIdUbdate.length === 0) {
+            showAlert('warning', 'Please choosen an exam', 'Click to back in list',
+                false, 'btn btn-warning');
+        } else {
+            this.ngProgress.start();
+            this.loading = true;
+            const objUpdate: any = {
+                action: state,
+                items: arrIdUbdate,
+                modified: {
+                    user_id: 'admin',
+                    user_name: 'admin',
+                    time: Date.now()
+                }
+            };
+            this._examService.changeMultiOnClick(objUpdate, prop)
+                .subscribe(
+                    data => {
+                        this.allItems.map(item => {
+                            if (prop === 'status' && item.selected)
+                                item.status = state;
+                            if (prop === 'special' && item.selected)
+                                item.special = state;
+                            item.selected = false;
+                        });
+                    },
+                    error => this.reloadPageIfError(),
+                    () => {
+                        this.ngProgress.done();
+                        this.loading = false;
+                        this.selectAll = false;
+                    });
+        }
+    }
+
+    /*---------------------------------------------------*/
+
+    checkAllExams() {
+        this.allItems.forEach(item => {
+            item.selected = this.selectAll;
+        });
     }
 }
