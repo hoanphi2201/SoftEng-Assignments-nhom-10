@@ -153,6 +153,125 @@ export class FormComponent implements OnInit {
         console.log(this.currentExam.answers);
     }
 
+    /*--------------------------------------------------------------
+    | onSubmitExam(id: string = '') id === '' => edit && id !== '' => add
+    ----------------------------------------------------------------*/
+    onSubmitExam(id: string = '') {
+        if (this.currentExam._id) {
+            id = this.currentExam._id;
+        }
+        if (this.formExam.valid) {
+            const modified = {
+                user_id: this.userLogin._id,
+                user_name: this.userLogin.local.username,
+                time: Date.now()
+            };
+            const created = {
+                user_id: this.userLogin._id,
+                user_name: this.userLogin.local.username,
+                time: Date.now()
+            };
+            // Create form data to post exam
+            let formData: FormData = new FormData();
+            formData.append('id', id);
+            formData.append('name', this.currentExam.name);
+            formData.append('slug', this.currentExam.slug);
+            formData.append('ordering', this.currentExam.ordering.toString());
+            formData.append('price', this.currentExam.price.toString());
+            formData.append('status', this.currentExam.status);
+            formData.append('special', this.currentExam.special);
+            formData.append('subject_id', this.currentExam.subject.id);
+            this.subjects.forEach((subj) => {
+                if (subj._id === this.currentExam.subject.id) {
+                    formData.append('subject_name', subj.name);
+                }
+            })
+            formData.append('level', this.currentExam.level);
+            formData.append('rates', this.currentExam.rates.toString());
+            formData.append('time', this.currentExam.time.toString());
+            formData.append('content', this.currentExam.content);
+            formData.append('onlineExam', this.currentExam.isOnlineExam ? 'online' : 'offline');
+            formData.append('answers', JSON.stringify(this.currentExam.answers));
+            if (this.currentExam.isOnlineExam) {
+                formData.append('starttime', this.currentExam.timeStart.toString());
+            }
+            formData.append('modified', JSON.stringify(modified));
+            formData.append('created', JSON.stringify(created));
+            let flagSubmit = true;
+            if (id === '') { // Add
+                if (this.selectedExamPdf === null) {
+                    flagSubmit = false;
+                    showAlert('warning',
+                        'Select Exam PDF To Upload' ,
+                        'Click to continue !',
+                        false,
+                        'btn btn-warning');
+                } else {
+                    formData.append('exam_pdf', this.selectedExamPdf, this.selectedExamPdf.name);
+                }
+                if (this.selectedThumb === null) {
+                    flagSubmit = false;
+                    showAlert('warning',
+                        'Select Thumb To Upload' ,
+                        'Click to continue !',
+                        false,
+                        'btn btn-warning');
+                } else {
+                    formData.append('thumb', this.selectedThumb, this.selectedThumb.name);
+                }
+            } else {
+                const exam = this.formExam.value;
+                formData.append('imageOld', exam.imageOld);
+                if (this.selectedThumb !== null) {
+                    formData.append('thumb', this.selectedThumb, this.selectedThumb.name);
+                }
+                formData.append('pdfOld', exam.pdfOld);
+                if (this.selectedExamPdf !== null) {
+                    formData.append('exam_pdf', this.selectedExamPdf, this.selectedExamPdf.name);
+                }
+            }
+            if (this.currentExam.answers && this.currentExam.answers.length > 0) {
+                this.currentExam.answers.forEach(item => {
+                    if (item.value === '') {
+                        flagSubmit = false;
+                        showAlert('warning',
+                            'Enter full answer' ,
+                            'Click to continue !',
+                            false,
+                            'btn btn-warning');
+                        return;
+                    }
+                });
+            }
+            if (flagSubmit) {
+                this.ngProgress.start();
+                this._examService.saveUser(formData)
+                    .subscribe(
+                        data => {
+                            console.log(data);
+                        },
+                        error => this.reloadPageIfError(),
+                        () => {
+                            this.ngProgress.done();
+                            showAlert('success',
+                                'Success' ,
+                                'Click to continue !',
+                                false,
+                                'btn btn-success');
+                        });
+            }
+        } else {
+            validateAllFormFields(this.formExam);
+        }
+    }
+
+    onChangeThumb(e) {
+        this.selectedThumb = e.target.files[0];
+    }
+
+    onChangeExamPdf(e) {
+        this.selectedExamPdf = e.target.files[0];
+    }
 
     reloadPageIfError() {
         SwalConfirm('Click Ok to reload the page', () => {

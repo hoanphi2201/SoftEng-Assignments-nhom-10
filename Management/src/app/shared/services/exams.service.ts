@@ -72,4 +72,12 @@ export class ExamsService {
             return this.changeSpecialMulti(objUpdate);
         }
     }
+
+    saveUser(formData: any): Observable<IExam> {
+        return this._httpService.post(this.apiUrl, formData)
+            .pipe(
+                tap(_ => {}),
+                catchError(this.handleError<any>('saveUser'))
+            );
+    }
 }

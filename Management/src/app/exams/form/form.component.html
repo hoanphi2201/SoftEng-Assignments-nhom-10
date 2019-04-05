@@ -284,11 +284,11 @@
         </div>
         <div class="row">
             <legend>Answers</legend>
-            <div  class="col-md-2 col-sm-4" *ngFor="let item of currentExam.answers">
+            <div  class="col-md-2 col-sm-4" *ngFor="let item of currentExam.answers;let index = index;">
                 <label class="control-label">Question {{item.number}}:
                     <span class="star">*</span>
                 </label>
-                <input  [value]="item.value"
+                <input  [(ngModel)]="currentExam.answers[index].value"
                         formControlName="answer"
                         type="text"
                         class="form-control">
