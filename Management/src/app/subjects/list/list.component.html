@@ -29,7 +29,7 @@
                             <div class="dataTables_length" >
                                 <label class="form-group">
                                     Show
-                                    <select     class="form-control">
+                                    <select class="form-control" [(ngModel)]="tablesLength" (change)="onChangeDataTableLength()">
                                         <option
                                                 *ngFor="let item of dataTablesLength"
                                                 [value]="item"
@@ -176,7 +176,9 @@
             <div  class="col-sm-12">
                 <div class="col-md-offset-7 col-xs-12" >
                     <div class="dataTables_paginate paging_full_numbers" id="datatables_paginate">
-                        <app-pagination-helper ></app-pagination-helper>
+                        <app-pagination-helper [setPager]="pager" (onClickSetPage)="onClickSetPage($event)">
+
+                        </app-pagination-helper>
                     </div>
                 </div>
             </div>

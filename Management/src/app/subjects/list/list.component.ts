@@ -31,7 +31,9 @@ export class ListComponent implements OnInit {
     pager: any = {};
     dataTablesLength: number[] = [5, 10, 20, 50, 100];
     tablesLength: number = 10; private allItems: ISubject[];
+    currentNumberSubjectOnPage: number = this.tablesLength;
     @Input('userLogin') userLogin: any;
+
     constructor(
         private _subjectService: SubjectsService,
         private pagerService: PagerService,
@@ -46,8 +48,9 @@ export class ListComponent implements OnInit {
     --------------------------------------------------------------------------------*/
     getItems(status: string, sort_field: string, sort_type: string, keyword: string) {
         this.ngProgress.start();
-        this.ngProgress.done();
+        // this.ngProgress.done();
 
+        this.loading  = true;
         this._subjectService.getItems(status, sort_field, sort_type, keyword)
             .subscribe(
                 data => {
@@ -107,6 +110,15 @@ export class ListComponent implements OnInit {
         this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
     }
 
+    onClickSetPage(e) {
+        this.setPage(e);
+        this.currentNumberSubjectOnPage = e;
+    }
+
+
+    onChangeDataTableLength() {
+        this.getItems(this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
 
     reloadPageIfError() {
         SwalConfirm('Click Ok to reload the page', () => {
