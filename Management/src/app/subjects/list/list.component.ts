@@ -48,10 +48,8 @@ export class ListComponent implements OnInit {
     | Get subjects status: string, sort_field: string, sort_type: string, keyword: string
     --------------------------------------------------------------------------------*/
     getItems(status: string, sort_field: string, sort_type: string, keyword: string) {
-        this.ngProgress.start();
-        // this.ngProgress.done();
-
-        this.loading  = true;
+        // this.ngProgress.start();
+        // this.loading  = true;
         this._subjectService.getItems(status, sort_field, sort_type, keyword)
             .subscribe(
                 data => {
@@ -61,14 +59,15 @@ export class ListComponent implements OnInit {
                 },
                 error => this.reloadPageIfError(),
                 () => {
-                    this.ngProgress.done();
-                    this.loading = false;
+                    // this.ngProgress.done();
+                    // this.loading = false;
                 });
 
     }
 
     getSubject() {
-        this.ngProgress.start();
+        // this.ngProgress.start();
+        // this.loading = true;
         /*-------------------------------
         | Todo: Get groups
         ---------------------------------*/
@@ -77,8 +76,8 @@ export class ListComponent implements OnInit {
         },
             error => this.reloadPageIfError(),
             () => {
-                this.ngProgress.done();
-                this.loading = false;
+                // this.ngProgress.done();
+                // this.loading = false;
             }
         );
 
@@ -122,8 +121,8 @@ export class ListComponent implements OnInit {
     }
 
     changeStatus(id: string, status: string) {
-        this.ngProgress.start();
-        this.loading = true;
+        // this.ngProgress.start();
+        // this.loading = true;
         const objSubject: any = {
             status: status,
             modified: {
@@ -142,8 +141,8 @@ export class ListComponent implements OnInit {
             },
             error => this.reloadPageIfError(),
             () => {
-                this.ngProgress.done();
-                this.loading = false;
+                // this.ngProgress.done();
+                // this.loading = false;
             }
         );
     }
@@ -167,8 +166,8 @@ export class ListComponent implements OnInit {
         if (this.selectedItems.length === 0) {
             showAlert('warning', 'please choosen an subject', 'click to back in list', false, 'btn btn-warn');
         } else {
-            this.ngProgress.start();
-            this.loading = true;
+            // this.ngProgress.start();
+            // this.loading = true;
             const objUpdate: any = {
                 action: state,
                 items: this.selectedItems,
@@ -191,9 +190,10 @@ export class ListComponent implements OnInit {
                     },
                     error => this.reloadPageIfError(),
                     () => {
-                        this.ngProgress.done();
-                        this.loading = false;
+                        // this.ngProgress.done();
+                        // this.loading = false;
                         this.selectAll = false;
+                        this.selectedItems = [];
                     }
                 );
         }
