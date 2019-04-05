@@ -18,14 +18,6 @@ export class ArticlesService {
         private router: Router) {
 
     }
-    getItems(group: string, status: string, sort_field: string, sort_type: string,  keyword: string ): Observable<IArticle[]> {
-        return this._httpService.get(`${this.apiUrl}/${group}/${status}/${sort_field}/${sort_type}/?keyword=${keyword}`, {
-            withCredentials: true
-        }).pipe(
-            tap(_ => {}),
-            catchError(this.handleError<any>('getItems'))
-        );
-    }
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             this.router.navigate(['/pages', 'errors']);

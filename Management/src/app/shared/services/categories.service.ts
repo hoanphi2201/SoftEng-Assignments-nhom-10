@@ -18,22 +18,6 @@ export class CategoriesService {
         private router: Router) {
 
     }
-
-    getItems(status: string, sort_field: string, sort_type: string, keyword: string ): Observable<ICategory[]> {
-        return this._httpService.get(`${this.apiUrl}/${status}/${sort_field}/${sort_type}?keyword=${keyword}`, {
-            withCredentials: true
-        }).pipe(
-            tap(_ => {}),
-            catchError(this.handleError<any>(' getItems'))
-        );
-    }
-    changeStatusMulti(objUpdate: any): Observable<ICategory> {
-        return this._httpService.put(`${this.apiUrl}/change-status`, objUpdate, this.options )
-            .pipe(
-                tap(_ => {}),
-                catchError(this.handleError<any>('changeStatusMulti'))
-            );
-    }
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             this.router.navigate(['/pages', 'errors']);

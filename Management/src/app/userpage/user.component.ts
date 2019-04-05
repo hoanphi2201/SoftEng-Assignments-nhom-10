@@ -17,24 +17,7 @@ export class UserComponent implements OnInit, OnDestroy {
     constructor(private _activatedRouteService: ActivatedRoute,
                 private _userService: UsersService) {}
     ngOnInit(): void {
-        this.subscription = this._activatedRouteService.params.subscribe(
-            (params: Params) => {
-                this._userService.getUserById(params['id']).subscribe(
-                    (data: any) 	=> {
-                        this.userDetail = data;
-                    }
 
-                );
-            },
-            (error: any) =>  {
-                showAlert('warning',
-                    `Server Error !`,
-                    'Click to contunue !',
-                    false,
-                    'btn btn-warning');
-                this.errorMessage = <any>error;
-            }
-        );
     }
     ngOnDestroy(): void {
         this.subscription.unsubscribe();

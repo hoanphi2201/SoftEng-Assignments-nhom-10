@@ -12,48 +12,6 @@ export class AuthenticationService {
         private router: Router) {
 
     }
-    login(username: string, password: string): Observable<any> {
-        return this._httpService.post(`${AppSettings.API_ENDPOINT}/auth/user/login`, {  username: username, password: password }, {
-            withCredentials: true
-        }).pipe(
-            tap(_ => {}),
-            catchError(this.handleError<any>('login'))
-        );
-
-    }
-    logout() {
-        return this._httpService.get(`${AppSettings.API_ENDPOINT}/auth/user/logout`, {
-            withCredentials: true
-        }).pipe(
-            tap(_ => {}),
-            catchError(this.handleError<any>('logout'))
-        );
-    }
-    // isLogin() {
-    //     return this._httpService.get(`${AppSettings.API_ENDPOINT}/auth/user/islogin`, {
-    //         withCredentials: true
-    //     }).pipe(
-    //             tap(_ => {}),
-    //             catchError(this.handleError<any>(' isLogin'))
-    //         );
-    // }
-    loginFacebook(data: any): Observable<any> {
-        return this._httpService.post(`${AppSettings.API_ENDPOINT}/auth/user/login-facebook`, data, {
-            withCredentials: true
-        }).pipe(
-            tap(_ => {}),
-            catchError(this.handleError<any>('loginFacebook'))
-        );
-
-    }
-    loginGoogle(data: any): Observable<any> {
-        return this._httpService.post(`${AppSettings.API_ENDPOINT}/auth/user/login-google`, data, {
-            withCredentials: true
-        }).pipe(
-            tap(_ => {}),
-            catchError(this.handleError<any>('loginGoogle'))
-        );
-    }
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             this.router.navigate(['/pages', 'errors']);
