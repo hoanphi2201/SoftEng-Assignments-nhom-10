@@ -74,7 +74,8 @@ export class ListComponent implements OnInit {
                         item.selected = false;
                     });
                     showNotification('top', 'right', 1000, 'Have ' + this.allItems.length + ' exam(s)');
-                },
+                    this.setPage(this.pager.currentPage);
+                    },
                 error => this.reloadPageIfError(),
                 () => {
                     this.ngProgress.done();
@@ -101,6 +102,20 @@ export class ListComponent implements OnInit {
                     this.ngProgress.done();
                     this.loading = false;
                 });
+    }
+    /*------------------------------------------------------------
+   | Set up items display in paged
+   ---------------------------------------------------------------*/
+    setPage(page: number) {
+        this.pager = this.pagerService.getPager(this.allItems.length, page, +this.tablesLength);
+        this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    }
+
+    /*------------------------------------------------------------
+    | Click number pagination
+    ---------------------------------------------------------------*/
+    onClickSetPage(e) {
+        this.setPage(e);
     }
     reloadPageIfError() {
         SwalConfirm('Click Ok to reload the page', () => {
