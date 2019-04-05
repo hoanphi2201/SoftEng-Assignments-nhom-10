@@ -11,7 +11,8 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-4">
                             <mat-form-field >
-                                <mat-select  placeholder="Choosen Status"  [(ngModel)]="statusSelect" >
+                                <mat-select  placeholder="Choosen Status"  [(ngModel)]="statusSelect" 
+                                            (selectionChange)="filterSubjects()">
                                     <mat-option value="all" >
                                         Choose Status
                                     </mat-option>
@@ -40,7 +41,8 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-md-offset-4">
-                            <input type="search" class="form-control" placeholder="Search records"  [(ngModel)]="keyword">
+                            <input type="search" class="form-control" placeholder="Search records"  [(ngModel)]="keyword"
+                                                    (keyup.enter)="filterSubjects()">
                         </div>
 
                     </div>

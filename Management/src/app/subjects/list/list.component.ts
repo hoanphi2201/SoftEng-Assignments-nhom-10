@@ -80,6 +80,11 @@ export class ListComponent implements OnInit {
 
     }
 
+
+    filterSubjects() {
+        this.getItems(this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+
     setPage(page: number) {
         this.pager = this.pagerService.getPager(this.allItems.length, page, +this.tablesLength);
         this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
