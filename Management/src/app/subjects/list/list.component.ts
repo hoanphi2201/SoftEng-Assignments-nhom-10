@@ -18,7 +18,8 @@ import {NgProgress} from 'ngx-progressbar';
 })
 export class ListComponent implements OnInit {
     loading: boolean = false;
-    pagedItems: any [] = [];
+    pagedItems: ISubject [] = [];
+    subjects: ISubject [] = [];
     statusSelect: string = 'all';
     sortType: string = 'asc';
     sortField: string = 'name';
@@ -27,8 +28,9 @@ export class ListComponent implements OnInit {
         {value: 'active', viewValue: 'active'},
         {value: 'inactive', viewValue: 'inactive'},
     ];
+    pager: any = {};
     dataTablesLength: number[] = [5, 10, 20, 50, 100];
-    tablesLength: number = 10;
+    tablesLength: number = 10; private allItems: ISubject[];
     @Input('userLogin') userLogin: any;
     constructor(
         private _subjectService: SubjectsService,
@@ -37,6 +39,7 @@ export class ListComponent implements OnInit {
         public ngProgress: NgProgress) {}
     ngOnInit(): void {
         this.getItems(this.statusSelect, this.sortField, this.sortType, this.keyword);
+        this.getSubject();
     }
     /*------------------------------------------------------------------------------
     | Get subjects status: string, sort_field: string, sort_type: string, keyword: string
@@ -45,7 +48,43 @@ export class ListComponent implements OnInit {
         this.ngProgress.start();
         this.ngProgress.done();
 
+        this._subjectService.getItems(status, sort_field, sort_type, keyword)
+            .subscribe(
+                data => {
+                    this.allItems = data;
+                    showNotification('top', 'right', 1000, 'Have ' + this.allItems.length + ' subject(s)');
+                    this.setPage(this.pager.currentPage);
+                },
+                error => this.reloadPageIfError(),
+                () => {
+                    this.ngProgress.done();
+                    this.loading = false;
+                });
+
     }
+
+    getSubject() {
+        this.ngProgress.start();
+        /*-------------------------------
+        | Todo: Get groups
+        ---------------------------------*/
+        this._subjectService.getItems('all', 'name', 'asc', '').subscribe(data => {
+            this.subjects = data;
+        },
+            error => this.reloadPageIfError(),
+            () => {
+                this.ngProgress.done();
+                this.loading = false;
+            }
+        );
+
+    }
+
+    setPage(page: number) {
+        this.pager = this.pagerService.getPager(this.allItems.length, page, +this.tablesLength);
+        this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    }
+
 
     reloadPageIfError() {
         SwalConfirm('Click Ok to reload the page', () => {
