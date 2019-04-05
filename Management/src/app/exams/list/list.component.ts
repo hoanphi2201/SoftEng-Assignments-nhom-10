@@ -257,4 +257,39 @@ export class ListComponent implements OnInit {
             item.selected = this.selectAll;
         });
     }
+
+    @Output() sendExam = new EventEmitter<IExam>();
+    openForm(id) {
+        let exam: IExam = {
+            name: null,
+            status: null,
+            special: null,
+            ordering: null,
+            content: null,
+            thumb: null,
+            exam_pdf: null,
+            slug: null,
+            level: null,
+            rates: null,
+            price: null,
+            onlineExam: null,
+            timeStart: null,
+            answers: [],
+            time: null,
+            subject: {
+                id: null,
+                name: null
+            },
+            number_questions: null
+        };
+        this.allItems.forEach((value, index) => {
+            if (value._id === id) {
+                exam = value;
+                return;
+            }
+        });
+        // Create copy object exam
+        const copyExam = Object.assign({}, exam);
+        this.sendExam.emit(copyExam);
+    }
 }
