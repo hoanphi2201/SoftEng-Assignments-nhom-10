@@ -24,6 +24,16 @@ export class SubjectsService {
             catchError(this.handleError<any>('getItems'))
         );
     }
+
+    changeStatus(id: string, objUpdate: ISubject): Observable<ISubject> {
+        return this._httpService.put(`${this.apiUrl}/change-status/${id}`, objUpdate)
+            .pipe(
+                tap(_ => { }),
+                catchError(this.handleError<any>('changeStatus'))
+            );
+    }
+
+
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             this.router.navigate(['/pages', 'errors']);

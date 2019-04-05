@@ -120,6 +120,33 @@ export class ListComponent implements OnInit {
         this.getItems(this.statusSelect, this.sortField, this.sortType, this.keyword);
     }
 
+    changeStatus(id: string, status: string) {
+        this.ngProgress.start();
+        this.loading = true;
+        const objSubject: any = {
+            status: status,
+            modified: {
+                user_id: 'admin',
+                user_name: 'admin',
+                time: Date.now()
+            }
+        };
+        this._subjectService.changeStatus(id, objSubject).subscribe(
+            data => {
+                this.pagedItems.map((subject, i) => {
+                    if (subject._id === id) {
+                        this.pagedItems[i].status = this.pagedItems[i].status === 'active' ? 'inactive' : 'active';
+                    }
+                });
+            },
+            error => this.reloadPageIfError(),
+            () => {
+                this.ngProgress.done();
+                this.loading = false;
+            }
+        );
+    }
+
     reloadPageIfError() {
         SwalConfirm('Click Ok to reload the page', () => {
             this.router.routeReuseStrategy.shouldReuseRoute = function () {

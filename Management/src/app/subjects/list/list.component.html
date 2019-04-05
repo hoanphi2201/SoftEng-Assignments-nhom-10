@@ -129,7 +129,7 @@
                                 <!-- <td appHover  [innerHTML]="'12345.png' | avatar : 'width: 40px; height: 40px' : '/exams/':'no-thumb.png'"></td> -->
                                 <td >
                                     <button class="btn btn-xs"
-                                        
+                                        (click)="changeStatus(item._id, item.status)"
                                         [ngClass]="item.status === 'active' ? 'btn-primary' : 'btn-warning'"
                                         >{{item.status}}</button>
                                 </td>
