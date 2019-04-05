@@ -136,5 +136,17 @@ export class ListComponent implements OnInit {
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
     }
 
+    /*------------------------SORT--------------------------*/
+    sortExamsBy(sortField) {
+        this.sortType = this.sortType == 'asc' ? 'desc' : 'asc';
+        this.sortField = sortField;
 
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+
+    displaySortType(sortField) {
+        if (sortField == this.sortField)
+            return this.sortType == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc';
+        return '';
+    }
 }
