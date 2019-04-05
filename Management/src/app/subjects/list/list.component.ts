@@ -85,6 +85,23 @@ export class ListComponent implements OnInit {
         this.getItems(this.statusSelect, this.sortField, this.sortType, this.keyword);
     }
 
+    sortSubjectsBy(sortField) {
+        this.sortType = this.sortType === 'asc' ? 'desc' : 'asc';
+        this.sortField = sortField;
+        this.getItems(this.statusSelect, this.sortField, this.sortType, this.keyword);
+        // setTimeout(() => {
+        //     this.selectAll = false;
+        // }, 1000);
+    }
+
+    displaySortBy(sortField) {
+
+        if (this.sortField === sortField) {
+            return this.sortType === 'asc' ? 'fa-sort-asc' : 'fa-sort-desc';
+        }
+        return '';
+    }
+
     setPage(page: number) {
         this.pager = this.pagerService.getPager(this.allItems.length, page, +this.tablesLength);
         this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);

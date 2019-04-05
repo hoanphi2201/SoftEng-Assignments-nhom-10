@@ -89,11 +89,21 @@
                                         </label>
                                     </div>
                                 </th>
-                                <th appHover >Name <i  class="fa fa-fw fa-xs" ></i></th>
-                                <th appHover >Status <i  class="fa fa-fw fa-xs" ></i></th>
-                                <th appHover >Slug <i  class="fa fa-fw fa-xs" ></i></th>
-                                <th appHover >Created <i  class="fa fa-fw fa-xs" ></i></th>
-                                <th appHover >Modified <i  class="fa fa-fw fa-xs" ></i></th>
+                                <th appHover (click)="sortSubjectsBy('name')">Name 
+                                    <i  class="fa fa-fw fa-xs fa-sort " [ngClass]="displaySortBy('name')"></i>
+                                </th>
+                                <th appHover (click)="sortSubjectsBy('status')">Status 
+                                    <i  class="fa fa-fw fa-xs fa-sort" [ngClass]="displaySortBy('status')"></i>
+                                </th>
+                                <th appHover (click)="sortSubjectsBy('slug')">Slug 
+                                    <i  class="fa fa-fw fa-xs fa-sort" [ngClass]="displaySortBy('slug')"></i>
+                                </th>
+                                <th appHover (click)="sortSubjectsBy('created.time')">Created 
+                                    <i  class="fa fa-fw fa-xs fa-sort" [ngClass]="displaySortBy('created.time')" ></i>
+                                </th>
+                                <th appHover (click)="sortSubjectsBy('modified.time')">Modified 
+                                    <i  class="fa fa-fw fa-xs fa-sort" [ngClass]="displaySortBy('modified.time')"></i>
+                                </th>
                                 <th class="disabled-sorting text-right">Actions</th>
                             </tr>
                         </thead>
