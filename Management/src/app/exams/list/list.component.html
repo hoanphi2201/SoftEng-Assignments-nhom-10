@@ -1,0 +1,237 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-icon" data-background-color="purple">
+                <i class="material-icons">assignment</i>
+            </div>
+            <div class="card-content">
+                <h4 class="card-title">Exams List</h4>
+                <div class="toolbar">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4">
+                            <mat-form-field>
+                                <mat-select placeholder="Choosen Status" [(ngModel)]="statusSelect"
+                                            (selectionChange)="filterExams()">
+                                    <mat-option value="all">
+                                        Choose Status
+                                    </mat-option>
+                                    <mat-option *ngFor="let  status of statuses" [value]="status.value">
+                                        {{status.viewValue | capitalize}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 col-md-offset-4 col-md-4">
+                            <mat-form-field>
+                                <mat-select placeholder="Choosen Subject" [(ngModel)]="subjectSelect"
+                                            (selectionChange)="filterExams()">
+                                    <mat-option value="allvalue">
+                                        Choose Subject
+                                    </mat-option>
+                                    <mat-option *ngFor="let subject of subjects" [value]="subject._id">
+                                        {{subject.name|capitalize}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4">
+                            <div class="dataTables_length">
+                                <label class="form-group">
+                                    Show
+                                    <select class="form-control" [(ngModel)]="tablesLength"
+                                            (change)="onChangeDataTableLength()">
+                                        <option *ngFor="let item of dataTablesLength" [value]="item"
+                                                [selected]="item == tablesLength">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item}}</option>
+                                    </select>
+                                    entries
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-offset-4 col-md-4">
+                            <input type="search" class="form-control" placeholder="Search records" [(ngModel)]="keyword"
+                                   (keyup.enter)="filterExams()">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="dropdown">
+                                <button class="dropdown-toggle btn btn-primary " data-toggle="dropdown"><i
+                                        class="material-icons">build</i>&nbsp; Bulk Action
+                                    <b class="caret"></b>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-left">
+                                    <li class="dropdown-header">Dropdown header</li>
+                                    <li>
+                                        <a appHover (click)="clickOnChangeMulti('status','active')">Active Status</a>
+                                    </li>
+                                    <li>
+                                        <a appHover (click)="clickOnChangeMulti('status','inactive')">InActive Status</a>
+                                    </li>
+                                    <li>
+                                        <a appHover (click)="clickOnChangeMulti('special','active')">Active Special</a>
+                                    </li>
+                                    <li>
+                                        <a appHover (click)="clickOnChangeMulti('special','inactive')">Inactive Special</a>
+                                    </li>
+                                    <li>
+                                        <a appHover href="javascript:void(0)">Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button class=" btn btn-primary  pull-right" data-toggle="dropdown" data-toggle="modal"
+                                    data-target="#noticeModal"
+                                    (click)="openForm()"><i class="material-icons">person_add</i>&nbsp; Add New
+                                Exam</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="material-datatables">
+                    <div *ngIf="loading" id="loader-wrapper">
+                        <div id="loader"></div>
+                    </div>
+                    <table class="table table-striped table-no-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>
+                                <div class="checkbox" >
+                                    <label>
+                                        <input type="checkbox"  name="optionsCheckboxes" [(ngModel)]="selectAll" (change)="checkAllExams()">
+                                    </label>
+                                </div>
+                            </th>
+                            <th appHover class="text-center" width="14%" (click)="sortExamsBy('name')">Name
+                                <i  class="fa fa-fw fa-xs fa-sort"
+                                    [ngClass]="displaySortType('name')"></i></th>
+                            <!-- <th appHover class="text-center" >Thumb <i  class="fa fa-fw fa-xs" ></i></th> -->
+                            <th appHover class="text-center" (click)="sortExamsBy('status')">Status
+                                <i  class="fa fa-fw fa-xs fa-sort"
+                                    [ngClass]="displaySortType('status')"></i></th>
+                            <th appHover class="text-center"(click)="sortExamsBy('special')">Special
+                                <i  class="fa fa-fw fa-xs fa-sort"
+                                    [ngClass]="displaySortType('special')"></i></th>
+                            <th appHover class="text-center"(click)="sortExamsBy('number_questions')">Question
+                                <i  class="fa fa-fw fa-xs fa-sort"
+                                    [ngClass]="displaySortType('number_questions')"></i></th>
+                            <th appHover class="text-center"(click)="sortExamsBy('subject.name')">Subject
+                                <i  class="fa fa-fw fa-xs fa-sort"
+                                    [ngClass]="displaySortType('subject.name')"></i></th>
+                            <th appHover class="text-center" (click)="sortExamsBy('created.time')">Created
+                                <i  class="fa fa-fw fa-xs fa-sort"
+                                    [ngClass]="displaySortType('created.time')"></i></th>
+                            <th appHover class="text-center" (click)="sortExamsBy('modified.time')">Modified
+                                <i  class="fa fa-fw fa-xs fa-sort"
+                                    [ngClass]="displaySortType('modified.time')"></i></th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngFor="let item of pagedItems;let i = index">
+
+                        <tr>
+                            <td class="text-center">{{i+1}}</td>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" [(ngModel)]="item.selected" name="optionsCheckboxes" >
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="hidden-name-sm">{{item.name}}</td>
+                            <td class="hidden-name-md td-actions">
+                                <button type="button" class="btn btn-primary
+                                             btn-round" matTooltip="{{item.name | capitalize}}"
+                                        [matTooltipPosition]="'above'">
+                                    <i class="material-icons">drag_indicator</i>
+                                </button>
+
+                            </td>
+                            <!-- <td appHover  [innerHTML]="'12345.png' | avatar : 'width: 40px; height: 40px' : '/exams/':'no-thumb.png'"></td> -->
+                            <td>
+                                <button  class="btn btn-xs btn-primary"
+                                         matTooltip="Click to change status"
+                                         [matTooltipPosition]="'above'" rel="tooltip"
+                                         (click)="changeStatus(item._id, item.status)">{{item.status}}</button>
+                            </td>
+                            <td>
+                                <button  class="btn btn-xs btn-warning"
+                                         matTooltip="Click to change special"
+                                         [matTooltipPosition]="'above'" rel="tooltip"
+                                         (click)="changeSpecial(item._id, item.special)">{{item.special}}</button>
+                            </td>
+                            <td class="text-center">{{item.number_questions}}</td>
+                            <td>{{item.subject.name}}</td>
+                            <td>
+                                    <span aria-hidden="true"
+                                          class="glyphicon glyphicon-user">{{item.created.user_name}}</span>
+                                <br>
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-time">{{item.created.time | date:'yyyy-MM-dd'}}</span>
+                            </td>
+                            <td>
+                                    <span aria-hidden="true"
+                                          class="glyphicon glyphicon-user">{{item.modified.user_name}}</span>
+                                <br>
+                                <span aria-hidden="true"
+                                      class="glyphicon glyphicon-time">{{item.modified.time | date:'yyyy-MM-dd'}}</span>
+                            </td>
+                            <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" matTooltip="Click to show chart"
+                                        [matTooltipPosition]="'above'" class="btn btn-info btn-round">
+                                    <i class="material-icons">timeline</i>
+                                </button>
+                                <button type="button" rel="tooltip" matTooltip="Click to show pdf of exam"
+                                        [matTooltipPosition]="'above'" class="btn btn-warning btn-round">
+                                    <i class="material-icons">description</i>
+                                </button>
+                                <button type="button" rel="tooltip" matTooltip="Click to edit exam"
+                                        [matTooltipPosition]="'above'" data-toggle="modal" data-target="#noticeModal"
+                                        class="btn btn-success btn-round"
+                                        (click)="openForm(item._id)">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button type="button" matTooltip="Click to delete exam"
+                                        [matTooltipPosition]="'above'" rel="tooltip" class="btn btn-danger
+                                             btn-round" (click)="onClickDeleteExam(item._id)">
+                                    <i class="material-icons">close</i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-7 col-sm-4">
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <div>
+
+                            <span class="btn btn-rose btn-file">
+                                <span class="fileinput-new"><i class="material-icons">cloud_upload</i> Import
+                                    EXAM</span>
+                                <span class="fileinput-exists">Change</span>
+                                <input type="file" name="import_exam" accept=".csv" />
+                            </span>
+                            <a class="btn btn-danger fileinput-exists" data-dismiss="fileinput"><i
+                                    class="fa fa-times"></i> Remove</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="dataTables_paginate paging_full_numbers">
+                        <app-pagination-helper [setPager]="pager" (onClickSetPage)="onClickSetPage($event)">
+                        </app-pagination-helper>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
