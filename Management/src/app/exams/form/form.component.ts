@@ -128,6 +128,32 @@ export class FormComponent implements OnInit {
         };
     }
 
+    onChangeNumOfQuestion() {
+        if (this.currentExam.answers.length === 0) {
+            this.currentExam.answers = new Array(this.simpleSlider);
+            for (let i = 0; i < this.simpleSlider; i++) {
+                this.currentExam.answers[i] = {
+                    number: i + 1,
+                    value: ''
+                };
+            }
+        }
+        if (this.currentExam.answers.length > 0) {
+            if (this.currentExam.answers.length < this.simpleSlider) {
+                for (let i = this.currentExam.answers.length; i < this.simpleSlider; i++) {
+                    this.currentExam.answers.push({
+                        number: i + 1,
+                        value: ''
+                    });
+                }
+            } else {
+                this.currentExam.answers = this.currentExam.answers.slice(0, this.simpleSlider);
+            }
+        }
+        console.log(this.currentExam.answers);
+    }
+
+
     reloadPageIfError() {
         SwalConfirm('Click Ok to reload the page', () => {
             this.router.routeReuseStrategy.shouldReuseRoute = function () {
