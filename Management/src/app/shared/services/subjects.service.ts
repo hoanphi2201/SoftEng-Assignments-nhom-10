@@ -33,6 +33,19 @@ export class SubjectsService {
             );
     }
 
+    changeStatusMulti(objUpdate: any[]): Observable<ISubject[]> {
+        return this._httpService.put(`${this.apiUrl}/change-status`, objUpdate)
+            .pipe(
+                tap(_ => { }),
+                catchError(this.handleError<any>('changeStatusMulti'))
+            );
+    }
+
+
+    clickOnChangeMulti(objUpdate: any): Observable<any> {
+        return this.changeStatusMulti(objUpdate);
+    }
+
 
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {

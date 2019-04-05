@@ -55,10 +55,10 @@
                                 <ul class="dropdown-menu dropdown-menu-left">
                                     <li class="dropdown-header">Dropdown header</li>
                                     <li>
-                                        <a  href="javascript:void(0)">Active</a>
+                                        <a  (click)="clickOnChangeMulti('active')">Active</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">InActive</a>
+                                        <a (click)="clickOnChangeMulti('inactive')">InActive</a>
                                     </li>
                                     <li>
                                         <a  href="javascript:void(0)">Delete</a>
@@ -85,7 +85,8 @@
                                 <th>
                                     <div class="checkbox">
                                         <label>
-                                            <input  type="checkbox" name="optionsCheckboxes" >
+                                            <input  type="checkbox" name="optionsCheckboxes" [(ngModel)]="selectAll"
+                                            (change)="checkAllItem()">
                                         </label>
                                     </div>
                                 </th>

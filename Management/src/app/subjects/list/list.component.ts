@@ -32,6 +32,7 @@ export class ListComponent implements OnInit {
     dataTablesLength: number[] = [5, 10, 20, 50, 100];
     tablesLength: number = 10; private allItems: ISubject[];
     currentNumberSubjectOnPage: number = this.tablesLength;
+    selectAll: boolean = false;
     @Input('userLogin') userLogin: any;
 
     constructor(
@@ -92,9 +93,9 @@ export class ListComponent implements OnInit {
         this.sortType = this.sortType === 'asc' ? 'desc' : 'asc';
         this.sortField = sortField;
         this.getItems(this.statusSelect, this.sortField, this.sortType, this.keyword);
-        // setTimeout(() => {
-        //     this.selectAll = false;
-        // }, 1000);
+        setTimeout(() => {
+            this.selectAll = false;
+        }, 1000);
     }
 
     displaySortBy(sortField) {
@@ -145,6 +146,57 @@ export class ListComponent implements OnInit {
                 this.loading = false;
             }
         );
+    }
+
+    checkAllItem() {
+        this.allItems.forEach(item => {
+            item.selected = this.selectAll;
+        });
+    }
+
+    selectedItems: ISubject [] = [];
+
+    clickOnChangeMulti(state) {
+
+        this.allItems.forEach(item => {
+            if (item.selected) {
+                this.selectedItems.push(item);
+            }
+        });
+
+        if (this.selectedItems.length === 0) {
+            showAlert('warning', 'please choosen an subject', 'click to back in list', false, 'btn btn-warn');
+        } else {
+            this.ngProgress.start();
+            this.loading = true;
+            const objUpdate: any = {
+                action: state,
+                items: this.selectedItems,
+                modified: {
+                    user_id: 'admin',
+                    user_name: 'admin',
+                    time: Date.now()
+                }
+            };
+
+            this._subjectService.clickOnChangeMulti(objUpdate)
+                .subscribe(
+                    data => {
+                        this.allItems.map(item => {
+                            if (item.selected) {
+                                item.status = state;
+                            }
+                            item.selected = false;
+                        });
+                    },
+                    error => this.reloadPageIfError(),
+                    () => {
+                        this.ngProgress.done();
+                        this.loading = false;
+                        this.selectAll = false;
+                    }
+                );
+        }
     }
 
     reloadPageIfError() {
