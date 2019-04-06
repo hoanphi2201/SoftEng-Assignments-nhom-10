@@ -114,6 +114,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
                         if (res && !res.error) {
                             console.log(res);
                             const data = Object.assign(res, response.authResponse);
+                            this.authenticationService.loginFacebook(data).subscribe(
+                                (user: any) => {
+                                    localStorage.setItem('accessToken', response.authResponse.accessToken);
+                                    showNotification('top', 'right', 300, `Xin chào ${user.name} `);
+                                    this.router.navigate([this.returnUrl]);
+                                }
+                            );
                         }
                     }
                 );
@@ -145,7 +152,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
                     id: profile.getId(),
                     avatar: profile.getImageUrl()
                 };
-                
+                this.authenticationService.loginGoogle(data).subscribe(
+                    (user: any) => {
+                        showNotification('top', 'right', 300, `Xin chào ${user.name} `);
+                        this.router.navigate([this.returnUrl]);
+                    }
+                );
 
             }, (error) => {
                 showNotification('top', 'right', 300, `Rất tiếc, đã xảy ra lỗi !`);
