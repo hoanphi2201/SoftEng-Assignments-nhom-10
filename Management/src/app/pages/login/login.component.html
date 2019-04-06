@@ -42,12 +42,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-                        <form  novalidate >
+                        <form [formGroup]="formLogin" (ngSubmit)="onLogin(formLogin.value)" novalidate >
                             <div class="card card-login card-hidden">
                                 <div class="card-header text-center" data-background-color="rose">
                                     <h4 class="card-title">Login</h4>
                                     <div class="social-line">
-                                        <a  class="btn btn-just-icon btn-simple">
+                                        <a (click)="onLoginWithFB()" class="btn btn-just-icon btn-simple">
                                             <i class="fa fa-facebook-square"></i>
                                         </a>
                                         <a  class="btn btn-just-icon btn-simple">
@@ -68,14 +68,35 @@
                                         <span class="input-group-addon">
                                             <i class="material-icons">face</i>
                                         </span>
-
+                                        <div class="form-group label-floating" [ngClass]="displayFieldCss(formLogin, 'username')">
+                                            <label class="control-label">Username</label>
+                                            <input
+                                                    matTooltip="Username is required and format is john@doe.com !" [matTooltipPosition]="'left'"
+                                                    formControlName="username"
+                                                    name="username"
+                                                    type="text"
+                                                    class="form-control">
+                                            <app-field-error-display [displayError]="isFieldValid(formLogin, 'username')" errorMsg="Required and format is john@doe.com !">
+                                            </app-field-error-display>
+                                        </div>
 
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon">
                                             <i class="material-icons">lock_outline</i>
                                         </span>
-
+                                        <div class="form-group label-floating" [ngClass]="displayFieldCss(formLogin, 'password')">
+                                            <label class="control-label">Password</label>
+                                            <input
+                                                    matTooltip="Password is required !" [matTooltipPosition]="'left'"
+                                                    formControlName="password"
+                                                    name="password"
+                                                    type="password"
+                                                    autocomplete="password"
+                                                    class="form-control">
+                                            <app-field-error-display [displayError]="isFieldValid(formLogin, 'password')" errorMsg="Password is required !">
+                                            </app-field-error-display>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="footer text-center">
