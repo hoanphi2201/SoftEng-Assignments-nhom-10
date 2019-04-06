@@ -24,6 +24,37 @@ export class SubjectsService {
             catchError(this.handleError<any>('getItems'))
         );
     }
+
+    changeStatus(id: string, objUpdate: ISubject): Observable<ISubject> {
+        return this._httpService.put(`${this.apiUrl}/change-status/${id}`, objUpdate)
+            .pipe(
+                tap(_ => { }),
+                catchError(this.handleError<any>('changeStatus'))
+            );
+    }
+
+    changeStatusMulti(objUpdate: any[]): Observable<ISubject[]> {
+        return this._httpService.put(`${this.apiUrl}/change-status`, objUpdate)
+            .pipe(
+                tap(_ => { }),
+                catchError(this.handleError<any>('changeStatusMulti'))
+            );
+    }
+
+
+    clickOnChangeMulti(objUpdate: any): Observable<any> {
+        return this.changeStatusMulti(objUpdate);
+    }
+
+    deleteSubject(id: string): Observable<ISubject[]> {
+        return this._httpService.delete<ISubject[]>(`${this.apiUrl}/${id}`, this.options)
+            .pipe(
+                tap(_ => console.log(`delete subject with id = ${id}`)),
+                catchError(this.handleError<any>('deleteSubject'))
+            );
+    }
+
+
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             this.router.navigate(['/pages', 'errors']);

@@ -11,7 +11,8 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-4">
                             <mat-form-field >
-                                <mat-select  placeholder="Choosen Status"  [(ngModel)]="statusSelect" >
+                                <mat-select  placeholder="Choosen Status"  [(ngModel)]="statusSelect" 
+                                            (selectionChange)="filterSubjects()">
                                     <mat-option value="all" >
                                         Choose Status
                                     </mat-option>
@@ -28,7 +29,7 @@
                             <div class="dataTables_length" >
                                 <label class="form-group">
                                     Show
-                                    <select     class="form-control">
+                                    <select class="form-control" [(ngModel)]="tablesLength" (change)="onChangeDataTableLength()">
                                         <option
                                                 *ngFor="let item of dataTablesLength"
                                                 [value]="item"
@@ -40,7 +41,8 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-md-offset-4">
-                            <input type="search" class="form-control" placeholder="Search records"  [(ngModel)]="keyword">
+                            <input type="search" class="form-control" placeholder="Search records"  [(ngModel)]="keyword"
+                                                    (keyup.enter)="filterSubjects()">
                         </div>
 
                     </div>
@@ -53,10 +55,10 @@
                                 <ul class="dropdown-menu dropdown-menu-left">
                                     <li class="dropdown-header">Dropdown header</li>
                                     <li>
-                                        <a  href="javascript:void(0)">Active</a>
+                                        <a  (click)="clickOnChangeMulti('active')">Active</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)">InActive</a>
+                                        <a (click)="clickOnChangeMulti('inactive')">InActive</a>
                                     </li>
                                     <li>
                                         <a  href="javascript:void(0)">Delete</a>
@@ -79,155 +81,91 @@
                     <table  class="table table-striped table-no-bordered table-hover">
                         <thead>
                             <tr>
-                                <th class="text-center">#</th>
+                                <th>#</th>
                                 <th>
                                     <div class="checkbox">
                                         <label>
-                                            <input  type="checkbox" name="optionsCheckboxes" >
+                                            <input  type="checkbox" name="optionsCheckboxes" [(ngModel)]="selectAll"
+                                            (change)="checkAllItem()">
                                         </label>
                                     </div>
                                 </th>
-                                <th appHover >Name <i  class="fa fa-fw fa-xs" ></i></th>
-                                <th appHover >Status <i  class="fa fa-fw fa-xs" ></i></th>
-                                <th appHover >Slug <i  class="fa fa-fw fa-xs" ></i></th>
-                                <th appHover >Created <i  class="fa fa-fw fa-xs" ></i></th>
-                                <th appHover >Modified <i  class="fa fa-fw fa-xs" ></i></th>
+                                <th appHover (click)="sortSubjectsBy('name')">Name 
+                                    <i  class="fa fa-fw fa-xs fa-sort " [ngClass]="displaySortBy('name')"></i>
+                                </th>
+                                <th appHover (click)="sortSubjectsBy('status')">Status 
+                                    <i  class="fa fa-fw fa-xs fa-sort" [ngClass]="displaySortBy('status')"></i>
+                                </th>
+                                <th appHover (click)="sortSubjectsBy('slug')">Slug 
+                                    <i  class="fa fa-fw fa-xs fa-sort" [ngClass]="displaySortBy('slug')"></i>
+                                </th>
+                                <th appHover (click)="sortSubjectsBy('created.time')">Created 
+                                    <i  class="fa fa-fw fa-xs fa-sort" [ngClass]="displaySortBy('created.time')" ></i>
+                                </th>
+                                <th appHover (click)="sortSubjectsBy('modified.time')">Modified 
+                                    <i  class="fa fa-fw fa-xs fa-sort" [ngClass]="displaySortBy('modified.time')"></i>
+                                </th>
                                 <th class="disabled-sorting text-right">Actions</th>
                             </tr>
                         </thead>
 
-                        <tbody>
-                            <tr >
-                                <td class="text-center">1</td>
+                        <tbody *ngFor="let item of pagedItems;let i = index">
+
+                            <tr>
+                                <td >{{i+1}}</td>
                                 <td>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="optionsCheckboxes">
+                                            <input type="checkbox" name="optionsCheckboxes" [(ngModel)]="item.selected">
                                         </label>
                                     </div>
                                 </td>
-                                <td  class="hidden-name-sm">Lịch sử</td>
+                                <td class="hidden-name-sm">{{item.name}}</td>
                                 <td class="hidden-name-md td-actions">
-                                    <button type="button"
-                                            class="btn btn-primary
-                                             btn-round">
-                                        <i matTooltip="subject name" [matTooltipPosition]="'above'" class="material-icons">drag_indicator</i>
+                                    <button type="button" class="btn btn-primary btn-round"
+                                        matTooltip="{{item.name | capitalize}}" [matTooltipPosition]="'above'">
+                                        <i class="material-icons">drag_indicator</i>
                                     </button>
                                 </td>
+                                <!-- <td appHover  [innerHTML]="'12345.png' | avatar : 'width: 40px; height: 40px' : '/exams/':'no-thumb.png'"></td> -->
                                 <td >
-                                    <button  class="btn btn-xs btn-primary" >active</button>
-                                </td>
-                                <td>lich-su</td>
-                                <td >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-user">admin</span>
-                                    <br >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-time">23-02-2019</span>
+                                    <button class="btn btn-xs"
+                                        (click)="changeStatus(item._id, item.status)"
+                                        [ngClass]="item.status === 'active' ? 'btn-primary' : 'btn-warning'"
+                                        >{{item.status}}</button>
                                 </td>
                                 <td >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-user">admin</span>
-                                    <br >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-time">23-02-2019</span>
+                                    {{item.slug}}
+                                </td>
+
+                                <td >
+                                    <span aria-hidden="true"
+                                        class="glyphicon glyphicon-user">{{item.created.user_name}}</span>
+                                    <br>
+                                    <span aria-hidden="true"
+                                        class="glyphicon glyphicon-time">{{item.created.time | date:'yyyy-MM-dd'}}</span>
+                                </td>
+                                <td >
+                                    <span aria-hidden="true"
+                                        class="glyphicon glyphicon-user">{{item.modified.user_name}}</span>
+                                    <br>
+                                    <span aria-hidden="true"
+                                        class="glyphicon glyphicon-time">{{item.modified.time | date:'yyyy-MM-dd'}}</span>
                                 </td>
                                 <td class="td-actions text-right">
-                                    <button type="button" rel="tooltip" class="btn btn-info btn-round">
+                                    <button type="button" rel="tooltip" matTooltip="Click to show chart"
+                                        [matTooltipPosition]="'above'" class="btn btn-info btn-round">
                                         <i class="material-icons">person</i>
                                     </button>
-                                    <button type="button" rel="tooltip" data-toggle="modal" data-target="#noticeModal"
-                                            class="btn btn-success btn-round">
+                                    <button type="button" rel="tooltip" matTooltip="Click to edit subject"
+                                        [matTooltipPosition]="'above'" data-toggle="modal" data-target="#noticeModal"
+                                        class="btn btn-success btn-round" >
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" rel="tooltip"
-                                            class="btn btn-danger btn-round">
-                                        <i class="material-icons">close</i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr >
-                                <td class="text-center">2</td>
-                                <td>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="optionsCheckboxes">
-                                        </label>
-                                    </div>
-                                </td>
-                                <td  class="hidden-name-sm">Lịch sử</td>
-                                <td class="hidden-name-md td-actions">
-                                    <button type="button"
-                                            class="btn btn-primary
-                                             btn-round">
-                                        <i matTooltip="subject name" [matTooltipPosition]="'above'" class="material-icons">drag_indicator</i>
-                                    </button>
-                                </td>
-                                <td >
-                                    <button  class="btn btn-xs btn-primary" >active</button>
-                                </td>
-                                <td>lich-su</td>
-                                <td >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-user">admin</span>
-                                    <br >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-time">23-02-2019</span>
-                                </td>
-                                <td >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-user">admin</span>
-                                    <br >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-time">23-02-2019</span>
-                                </td>
-                                <td class="td-actions text-right">
-                                    <button type="button" rel="tooltip" class="btn btn-info btn-round">
-                                        <i class="material-icons">person</i>
-                                    </button>
-                                    <button type="button" rel="tooltip" data-toggle="modal" data-target="#noticeModal"
-                                            class="btn btn-success btn-round">
-                                        <i class="material-icons">edit</i>
-                                    </button>
-                                    <button type="button" rel="tooltip"
-                                            class="btn btn-danger btn-round">
-                                        <i class="material-icons">close</i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr >
-                                <td class="text-center">3</td>
-                                <td>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="optionsCheckboxes">
-                                        </label>
-                                    </div>
-                                </td>
-                                <td  class="hidden-name-sm">Lịch sử</td>
-                                <td class="hidden-name-md td-actions">
-                                    <button type="button"
-                                            class="btn btn-primary
-                                             btn-round">
-                                        <i matTooltip="subject name" [matTooltipPosition]="'above'" class="material-icons">drag_indicator</i>
-                                    </button>
-                                </td>
-                                <td >
-                                    <button  class="btn btn-xs btn-primary" >active</button>
-                                </td>
-                                <td>lich-su</td>
-                                <td >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-user">admin</span>
-                                    <br >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-time">23-02-2019</span>
-                                </td>
-                                <td >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-user">admin</span>
-                                    <br >
-                                    <span  aria-hidden="true" class="glyphicon glyphicon-time">23-02-2019</span>
-                                </td>
-                                <td class="td-actions text-right">
-                                    <button type="button" rel="tooltip" class="btn btn-info btn-round">
-                                        <i class="material-icons">person</i>
-                                    </button>
-                                    <button type="button" rel="tooltip" data-toggle="modal" data-target="#noticeModal"
-                                            class="btn btn-success btn-round">
-                                        <i class="material-icons">edit</i>
-                                    </button>
-                                    <button type="button" rel="tooltip"
-                                            class="btn btn-danger btn-round">
+                                    <button type="button" matTooltip="Click to delete subject"
+                                        [matTooltipPosition]="'above'" rel="tooltip" 
+                                                    class="btn btn-danger btn-round"
+                                                    (click)="deleteSubject(item._id)">
                                         <i class="material-icons">close</i>
                                     </button>
                                 </td>
@@ -239,7 +177,9 @@
             <div  class="col-sm-12">
                 <div class="col-md-offset-7 col-xs-12" >
                     <div class="dataTables_paginate paging_full_numbers" id="datatables_paginate">
-                        <app-pagination-helper [setPager]="pager" (onClickSetPage)="onClickSetPage($event)" ></app-pagination-helper>
+                        <app-pagination-helper [setPager]="pager" (onClickSetPage)="onClickSetPage($event)">
+
+                        </app-pagination-helper>
                     </div>
                 </div>
             </div>
