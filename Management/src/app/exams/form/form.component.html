@@ -288,7 +288,8 @@
                 <label class="control-label">Question {{item.number}}:
                     <span class="star">*</span>
                 </label>
-                <input  [(ngModel)]="currentExam.answers[index].value"
+                <input  [value]="item.value"
+                        (keyup)="currentExam.answers[index].value = $event.target.value"
                         formControlName="answer"
                         type="text"
                         class="form-control">
@@ -296,7 +297,7 @@
         </div>
     </div>
     <div class="modal-footer text-center">
-        <button (click)="onSubmitExam()" [disabled]="!formExam.valid"  type="button" class="btn btn-primary btn-round"><i
+        <button (click)="onSubmitExam()" [disabled]="formExam.invalid" type="button" class="btn btn-primary btn-round"><i
                 class="material-icons">person_add</i>
             Submit
         </button>

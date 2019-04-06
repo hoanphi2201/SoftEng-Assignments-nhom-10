@@ -8,6 +8,7 @@ import {ckeConfig, validateAllFormFields, getSlug} from '../../shared/helper/con
 import {Router} from '@angular/router';
 import {NgProgress} from 'ngx-progressbar';
 import {IExam} from '../../shared/defines/exam';
+declare var $: any;
 
 @Component({
     selector: 'exams-form',
@@ -249,6 +250,7 @@ export class FormComponent implements OnInit {
                     .subscribe(
                         data => {
                             console.log(data);
+                            this._examService.setSubmitedExam(data);
                         },
                         error => this.reloadPageIfError(),
                         () => {
@@ -258,6 +260,8 @@ export class FormComponent implements OnInit {
                                 'Click to continue !',
                                 false,
                                 'btn btn-success');
+                            $('#noticeModal').modal('hide');
+                            return;
                         });
             }
         } else {

@@ -291,5 +291,23 @@ export class ListComponent implements OnInit {
         // Create copy object exam
         const copyExam = Object.assign({}, exam);
         this.sendExam.emit(copyExam);
+        let isAdd: boolean = true;
+        this._examService.getSubmitedExam().subscribe(submitedExam => {
+            this.allItems.map(value => {
+                if (value._id === submitedExam._id) {
+                    isAdd = false;
+                    value.status = submitedExam.status;
+                    value.special = submitedExam.special;
+                    value.number_questions = submitedExam.number_questions;
+                    value.subject.name = submitedExam.subject.name;
+                    value.modified.user_name = submitedExam.modified.user_name;
+                    value.modified.time = submitedExam.modified.time;
+                    return;
+                }
+            });
+            if (isAdd) {
+                this.allItems.push(submitedExam);
+            }
+        });
     }
 }

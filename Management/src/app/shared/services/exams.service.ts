@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IExam } from '../defines/exam';
 import { AppSettings } from '../helper/app.setting';
-import { Observable, of } from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import {Router} from '@angular/router';
@@ -79,5 +79,15 @@ export class ExamsService {
                 tap(_ => {}),
                 catchError(this.handleError<any>('saveUser'))
             );
+    }
+
+    private submitedExam: Subject<any> = new Subject<any>();
+
+    public getSubmitedExam(): Observable<any> {
+        return this.submitedExam.asObservable();
+    }
+
+    public setSubmitedExam(exam: any): void {
+        this.submitedExam.next(exam);
     }
 }
