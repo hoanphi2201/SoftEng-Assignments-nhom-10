@@ -122,7 +122,38 @@ export class LoginComponent implements OnInit, AfterViewInit {
             }
         });
     }
-    ngAfterViewInit(): void {
+    public googleInit() {
+        gapi.load('auth2', () => {
+            this.auth2 = gapi.auth2.init({
+                client_id: AppSettings.GOOGLE_CLIENT_ID,
+                cookiepolicy: 'single_host_origin',
+                scope: 'profile email'
+            });
+            this.attachSignin(document.getElementById('googleBtn'));
+        });
+    }
+    public attachSignin(element) {
+        this.auth2.attachClickHandler(element, {},
+            (googleUser) => {
+                const profile = googleUser.getBasicProfile();
+                const data =  {
+                    name: profile.getName(),
+                    email: profile.getEmail(),
+                    first_name:  profile.getFamilyName(),
+                    last_name: profile.getGivenName(),
+                    accessToken: googleUser.getAuthResponse().id_token,
+                    id: profile.getId(),
+                    avatar: profile.getImageUrl()
+                };
+                
+
+            }, (error) => {
+                showNotification('top', 'right', 300, `Rất tiếc, đã xảy ra lỗi !`);
+            });
+    }
+
+    ngAfterViewInit() {
+        this.googleInit();
     }
 
 }
