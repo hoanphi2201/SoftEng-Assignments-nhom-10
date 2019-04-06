@@ -131,6 +131,11 @@ export class ListComponent implements OnInit {
         }, 'Server Error !', '500px', 'warning');
     }
 
+    /*------------------Thay đổi số exam trên 1 page---------------------*/
+    onChangeDataTableLength() {
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+
     /*-----------------------Lọc, tìm kiếm----------------------------*/
     filterExams() {
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
