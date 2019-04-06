@@ -157,15 +157,15 @@
                                         [matTooltipPosition]="'above'" class="btn btn-info btn-round">
                                         <i class="material-icons">person</i>
                                     </button>
-                                    <button type="button" rel="tooltip" matTooltip="Click to edit exam"
+                                    <button type="button" rel="tooltip" matTooltip="Click to edit subject"
                                         [matTooltipPosition]="'above'" data-toggle="modal" data-target="#noticeModal"
                                         class="btn btn-success btn-round" >
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" matTooltip="Click to delete exam"
+                                    <button type="button" matTooltip="Click to delete subject"
                                         [matTooltipPosition]="'above'" rel="tooltip" 
                                                     class="btn btn-danger btn-round"
-                                                    >
+                                                    (click)="deleteSubject(item._id)">
                                         <i class="material-icons">close</i>
                                     </button>
                                 </td>

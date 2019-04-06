@@ -46,6 +46,14 @@ export class SubjectsService {
         return this.changeStatusMulti(objUpdate);
     }
 
+    deleteSubject(id: string): Observable<ISubject[]> {
+        return this._httpService.delete<ISubject[]>(`${this.apiUrl}/${id}`, this.options)
+            .pipe(
+                tap(_ => console.log(`delete subject with id = ${id}`)),
+                catchError(this.handleError<any>('deleteSubject'))
+            );
+    }
+
 
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {

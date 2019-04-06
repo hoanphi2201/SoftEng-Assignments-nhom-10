@@ -199,6 +199,22 @@ export class ListComponent implements OnInit {
         }
     }
 
+    deleteSubject(id: string) {
+        // this.ngProgress.start();
+        // this.loading = true;
+        this._subjectService.deleteSubject(id).subscribe(
+            data => {
+                // this.setPage(this.currentNumberSubjectOnPage);
+                this.pagedItems = this.pagedItems.filter(item => item._id !== id);
+            },
+            error => this.reloadPageIfError(),
+            () => {
+                // this.ngProgress.done();
+                // this.loading = false;
+            }
+        );
+    }
+
     reloadPageIfError() {
         SwalConfirm('Click Ok to reload the page', () => {
             this.router.routeReuseStrategy.shouldReuseRoute = function () {
