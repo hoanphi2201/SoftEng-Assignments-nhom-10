@@ -5,6 +5,7 @@ import {SubjectsService} from '../../shared/services/subjects.service';
 import {ckeConfig, getSlug, validateAllFormFields} from '../../shared/helper/config';
 import {Router} from '@angular/router';
 import {NgProgress} from 'ngx-progressbar';
+import { ISubject } from '../../shared/defines/subject';
 @Component({
     selector: 'subjects-form',
     templateUrl: './form.component.html',
@@ -12,7 +13,7 @@ import {NgProgress} from 'ngx-progressbar';
 })
 export class FormComponent implements OnInit {
     ckeConfig: any;
-    formAddSubject: FormGroup;
+    formSubject: FormGroup;
     slug: string = '';
 
     statuses: any[] = [
@@ -20,6 +21,12 @@ export class FormComponent implements OnInit {
         {value: 'inactive', viewValue: 'inactive'},
     ];
     @Input('userLogin') userLogin: any;
+    @Input() selectedSubject: ISubject;
+    @Input() edittingSubject: boolean;
+    @Output("onUpdateForListSubject") currentSubject = new EventEmitter<ISubject>();
+    @Output("onSubmit") onSubmit = new EventEmitter<boolean>();
+    
+    @ViewChild('closemodal') closemodal: ElementRef;
     constructor(
         private _formBuilder: FormBuilder,
         private _subjectService: SubjectsService,
@@ -28,8 +35,13 @@ export class FormComponent implements OnInit {
 
     ngOnInit(): void {
         this.ckeConfig = ckeConfig;
-
-
+        this.formSubject = this._formBuilder.group({
+            name: ["", [Validators.required]],
+            slug: ["", [Validators.required]],
+            ordering: ["", [Validators.required]],
+            content: ["", [Validators.required]],
+            status: ["", [Validators.required]]
+        });
     }
 
     isFieldValid(form: FormGroup, field: string) {
@@ -43,22 +55,15 @@ export class FormComponent implements OnInit {
     }
 
     onSubmitSubject(id: string = '') {
-        if (this.formAddSubject.valid) {
-            const subject = this.formAddSubject.value;
-            subject.id = id;
-            subject.modified = {
-                user_id: this.userLogin._id,
-                user_name: this.userLogin.local.username,
-                time: Date.now()
-            }
-            subject.created = {
-                user_id: this.userLogin._id,
-                user_name: this.userLogin.local.username,
-                time: Date.now()
-            }
+        if (this.formSubject.valid) {
+            const subject: ISubject = this.formSubject.value;
+            subject._id = id;
+            this.currentSubject.emit(subject);
         } else {
-            validateAllFormFields(this.formAddSubject);
+            validateAllFormFields(this.formSubject);
         }
+        this.edittingSubject = false;
+        this.onSubmit.emit(this.edittingSubject);
     }
 
     reloadPageIfError() {

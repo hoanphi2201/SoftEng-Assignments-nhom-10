@@ -54,6 +54,13 @@ export class SubjectsService {
             );
     }
 
+    addSubject(newSubject: ISubject): Observable<ISubject> {
+        return this._httpService.post<ISubject>(`${this.apiUrl}`, newSubject, this.options)
+            .pipe(
+                tap((subject: ISubject) => console.log(`inserted subject = ${JSON.stringify(subject)}`)),
+                catchError(this.handleError<any>('addSubject'))
+            );
+    }
 
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {

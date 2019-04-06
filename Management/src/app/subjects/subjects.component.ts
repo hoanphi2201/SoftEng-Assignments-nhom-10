@@ -10,6 +10,10 @@ import {AuthenticationService} from '../shared/services/authentication.service';
 export class SubjectsComponent implements OnInit {
 
     userLogin: any;
+    selectedSubject: ISubject;
+    currentSubject: ISubject;
+    edittingSubject: boolean;
+
     @ViewChild('closemodal') closemodal: ElementRef;
     constructor(private _authenticationService: AuthenticationService) {}
     ngOnInit(): void {
@@ -20,5 +24,16 @@ export class SubjectsComponent implements OnInit {
             _id: '5c750dbd95033604111f2c08'
         };
     }
+    onEditSubject(e: ISubject) {
+        this.selectedSubject = e;
+        this.edittingSubject = true;
+    }
+    onUpdateForListSubject(item: ISubject) {
+        this.currentSubject = item;
+        // console.log(this.currentSubject);
+    }
 
+    onSubmit(event: boolean) {
+        this.edittingSubject = event;
+    }
 }
