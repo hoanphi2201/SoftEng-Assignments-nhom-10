@@ -13,7 +13,7 @@
                                 <mat-select placeholder="Choosen Status" [(ngModel)]="statusSelect"
                                     (selectionChange)="filterExams()">
                                     <mat-option value="all">
-                                        Choose Status
+                                        All
                                     </mat-option>
                                     <mat-option *ngFor="let  status of statuses" [value]="status.value">
                                         {{status.viewValue | capitalize}}
@@ -26,7 +26,7 @@
                                 <mat-select placeholder="Choosen Subject" [(ngModel)]="subjectSelect"
                                     (selectionChange)="filterExams()">
                                     <mat-option value="allvalue">
-                                        Choose Subject
+                                        All
                                     </mat-option>
                                     <mat-option *ngFor="let subject of subjects" [value]="subject._id">
                                         {{subject.name|capitalize}}

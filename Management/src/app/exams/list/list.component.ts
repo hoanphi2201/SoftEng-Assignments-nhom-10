@@ -131,6 +131,11 @@ export class ListComponent implements OnInit {
         }, 'Server Error !', '500px', 'warning');
     }
 
+    /*------------------Thay đổi số exam trên 1 page---------------------*/
+    onChangeDataTableLength() {
+        this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
+    }
+
     /*-----------------------Lọc, tìm kiếm----------------------------*/
     filterExams() {
         this.getItems(this.subjectSelect, this.statusSelect, this.sortField, this.sortType, this.keyword);
@@ -152,7 +157,6 @@ export class ListComponent implements OnInit {
 
     changeStatus(id, status) {
         this.ngProgress.start();
-        this.loading = true;
         const objExam: any = {
             status: status,
             modified: {
@@ -174,13 +178,13 @@ export class ListComponent implements OnInit {
                 error => this.reloadPageIfError(),
                 () => {
                     this.ngProgress.done();
-                    this.loading = false;
+                    showAlert('success', 'Change Status', 'Success',
+                        false, 'btn btn-success');
                 });
     }
 
     changeSpecial(id, special) {
         this.ngProgress.start();
-        this.loading = true;
         const objExam: any = {
             special: special,
             modified: {
@@ -202,7 +206,8 @@ export class ListComponent implements OnInit {
                 error => this.reloadPageIfError(),
                 () => {
                     this.ngProgress.done();
-                    this.loading = false;
+                    showAlert('success', 'Change Special', 'Success',
+                        false, 'btn btn-success');
                 });
     }
 
@@ -220,7 +225,6 @@ export class ListComponent implements OnInit {
                 false, 'btn btn-warning');
         } else {
             this.ngProgress.start();
-            this.loading = true;
             const objUpdate: any = {
                 action: state,
                 items: arrIdUbdate,
@@ -244,7 +248,8 @@ export class ListComponent implements OnInit {
                     error => this.reloadPageIfError(),
                     () => {
                         this.ngProgress.done();
-                        this.loading = false;
+                        showAlert('success', 'Change All Exam Selected', 'Success',
+                            false, 'btn btn-success');
                         this.selectAll = false;
                     });
         }
@@ -255,6 +260,59 @@ export class ListComponent implements OnInit {
     checkAllExams() {
         this.allItems.forEach(item => {
             item.selected = this.selectAll;
+        });
+    }
+
+    @Output() sendExam = new EventEmitter<IExam>();
+    openForm(id) {
+        let exam: IExam = {
+            name: null,
+            status: null,
+            special: null,
+            ordering: null,
+            content: null,
+            thumb: null,
+            exam_pdf: null,
+            slug: null,
+            level: null,
+            rates: null,
+            price: null,
+            onlineExam: null,
+            timeStart: null,
+            answers: [],
+            time: null,
+            subject: {
+                id: null,
+                name: null
+            },
+            number_questions: null
+        };
+        this.allItems.forEach((value, index) => {
+            if (value._id === id) {
+                exam = value;
+                return;
+            }
+        });
+        // Create copy object exam
+        const copyExam = Object.assign({}, exam);
+        this.sendExam.emit(copyExam);
+        let isAdd: boolean = true;
+        this._examService.getSubmitedExam().subscribe(submitedExam => {
+            this.allItems.map(value => {
+                if (value._id === submitedExam._id) {
+                    isAdd = false;
+                    value.status = submitedExam.status;
+                    value.special = submitedExam.special;
+                    value.number_questions = submitedExam.number_questions;
+                    value.subject.name = submitedExam.subject.name;
+                    value.modified.user_name = submitedExam.modified.user_name;
+                    value.modified.time = submitedExam.modified.time;
+                    return;
+                }
+            });
+            if (isAdd) {
+                this.allItems.push(submitedExam);
+            }
         });
     }
 }
