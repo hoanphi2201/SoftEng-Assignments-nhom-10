@@ -69,6 +69,7 @@ export class ListComponent implements OnInit {
         this._examService.getItems(subject, status, sort_field, sort_type, keyword)
             .subscribe(
                 data => {
+                    this.selectAll = false;
                     this.allItems = data;
                     this.allItems.map((item) => {
                         item.selected = false;
@@ -312,6 +313,9 @@ export class ListComponent implements OnInit {
             });
             if (isAdd) {
                 this.allItems.push(submitedExam);
+                if (this.pager.currentPage === this.pager.totalPages) {
+                    this.pagedItems.push(submitedExam);
+                }
             }
         });
     }
