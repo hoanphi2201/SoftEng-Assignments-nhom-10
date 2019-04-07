@@ -83,10 +83,12 @@
         </div>
     </div>
     <div class="modal-footer text-center">
-        <button *ngIf="!edittingSubject" (click)="onSubmitSubject()" type="button" #closemodal class="btn btn-primary btn-round" data-dismiss="modal">
-            <i class="material-icons">person_add</i> Submit
+        <button *ngIf="!edittingSubject" (click)="onSubmitSubject()" type="button" 
+                class="btn btn-primary btn-round" [disabled]='formSubject.invalid'><i
+                class="material-icons">person_add</i> Submit
         </button>
-        <button *ngIf="edittingSubject" (click)="onSubmitSubject(selectedSubject._id)" type="button" #closemodal class="btn btn-primary btn-round" data-dismiss="modal">
+        <button *ngIf="edittingSubject" (click)="onSubmitSubject(selectedSubject._id)" type="button"
+            class="btn btn-primary btn-round" [disabled]='formSubject.invalid'>
             <i class="material-icons">person_add</i> Submit
         </button>
     </div>

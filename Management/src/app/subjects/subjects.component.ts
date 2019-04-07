@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Input} from '@angular/core';
 import {ISubject} from '../shared/defines/subject';
 import {AuthenticationService} from '../shared/services/authentication.service';
 
@@ -28,12 +28,8 @@ export class SubjectsComponent implements OnInit {
         this.selectedSubject = e;
         this.edittingSubject = true;
     }
-    onUpdateForListSubject(item: ISubject) {
+    onSubmit(item: ISubject) {
         this.currentSubject = item;
         // console.log(this.currentSubject);
-    }
-
-    onSubmit(event: boolean) {
-        this.edittingSubject = event;
     }
 }

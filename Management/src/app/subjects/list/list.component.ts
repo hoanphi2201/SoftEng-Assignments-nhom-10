@@ -35,8 +35,8 @@ export class ListComponent implements OnInit, OnChanges {
     pagedItems: ISubject[];
     selectAll: boolean = false;
     @Input('userLogin') userLogin: any;
+
     @Input('currentSubject') currentSubject: ISubject;
-    @Input('edittingSubject') edittingSubject: Boolean;
 
     constructor(
         private _subjectService: SubjectsService,
@@ -68,16 +68,50 @@ export class ListComponent implements OnInit, OnChanges {
                 }
             };
 
-            this._subjectService.deleteSubject(this.currentSubject._id).subscribe(_ => {
-                this.pagedItems = this.pagedItems.filter(eachSubject => eachSubject._id !== this.currentSubject._id);
-            });
+            // this._subjectService.deleteSubject(this.currentSubject._id).subscribe(_ => {
+            //     this.pagedItems = this.pagedItems.filter(eachSubject => eachSubject._id !== this.currentSubject._id);
+            // });
 
-            this._subjectService.addSubject(objSubject).subscribe(insertedSubject => {
-                this.pagedItems.push(insertedSubject);
+            let isAdd = true;
+            this.allItems.map(value => {
+                if (value._id === this.currentSubject._id) {
+                    isAdd = false;
+                    value.status = objSubject.status;
+                    value.name = objSubject.name;
+                    value.slug = objSubject.slug;
+                    value.ordering = objSubject.ordering;
+                    value.content = objSubject.content;
+                    objSubject.id = value._id;
+                    this._subjectService.addSubject(objSubject).subscribe(
+                        insertedSubject => {},
+                        error => this.reloadPageIfError(),
+                        () => {
+                            showAlert('success',
+                                'Success' ,
+                                'Click to continue !',
+                                false,
+                                'btn btn-success');
+                            $('#noticeModal').modal('hide');
+                            return;
+                        });
+                }
             });
-
-            // this.sortSubjectsBy('name');
-            // this.setPage(this.currentNumberSubjectOnPage);
+            if (isAdd) {
+                this._subjectService.addSubject(objSubject).subscribe(
+                    insertedSubject => {
+                        this.pagedItems.push(insertedSubject);
+                    },
+                    error => this.reloadPageIfError(),
+                    () => {
+                        showAlert('success',
+                            'Success' ,
+                            'Click to continue !',
+                            false,
+                            'btn btn-success');
+                        $('#noticeModal').modal('hide');
+                        return;
+                    });
+            }
         }
     }
     ngOnInit(): void {
@@ -96,12 +130,12 @@ export class ListComponent implements OnInit, OnChanges {
                     this.allItems = data;
                     showNotification('top', 'right', 1000, 'Have ' + this.allItems.length + ' subject(s)');
                     this.setPage(this.pager.currentPage);
+                    this.selectAll = false;
                 },
                 error => this.reloadPageIfError(),
                 () => {
                     // this.ngProgress.done();
                     // this.loading = false;
-                    this.selectAll = false;
                 });
 
     }

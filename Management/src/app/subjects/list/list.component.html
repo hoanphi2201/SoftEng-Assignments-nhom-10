@@ -8,12 +8,12 @@
                 <h4 class="card-title">Subjects List</h4>
                 <div class="toolbar">
                     <div class="row">
-                        <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-2">
                             <mat-form-field>
                                 <mat-select placeholder="Choosen Status" [(ngModel)]="statusSelect"
                                     (selectionChange)="filterSubjects()">
                                     <mat-option value="all">
-                                        Choose Status
+                                        All
                                     </mat-option>
                                     <mat-option *ngFor="let  status of statuses" [value]="status.value">
                                         {{status.viewValue | capitalize}}

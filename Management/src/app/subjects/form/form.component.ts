@@ -6,6 +6,7 @@ import {ckeConfig, getSlug, validateAllFormFields} from '../../shared/helper/con
 import {Router} from '@angular/router';
 import {NgProgress} from 'ngx-progressbar';
 import { ISubject } from '../../shared/defines/subject';
+declare var $: any;
 @Component({
     selector: 'subjects-form',
     templateUrl: './form.component.html',
@@ -23,10 +24,9 @@ export class FormComponent implements OnInit {
     @Input('userLogin') userLogin: any;
     @Input() selectedSubject: ISubject;
     @Input() edittingSubject: boolean;
-    @Output("onUpdateForListSubject") currentSubject = new EventEmitter<ISubject>();
-    @Output("onSubmit") onSubmit = new EventEmitter<boolean>();
+
     
-    @ViewChild('closemodal') closemodal: ElementRef;
+
     constructor(
         private _formBuilder: FormBuilder,
         private _subjectService: SubjectsService,
@@ -54,6 +54,8 @@ export class FormComponent implements OnInit {
         };
     }
 
+    @Output("onSubmit ") currentSubject = new EventEmitter<ISubject>();
+
     onSubmitSubject(id: string = '') {
         if (this.formSubject.valid) {
             const subject: ISubject = this.formSubject.value;
@@ -63,7 +65,7 @@ export class FormComponent implements OnInit {
             validateAllFormFields(this.formSubject);
         }
         this.edittingSubject = false;
-        this.onSubmit.emit(this.edittingSubject);
+        this.ngOnInit();
     }
 
     reloadPageIfError() {
