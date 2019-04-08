@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {ISubject} from '../defines/subject';
 import {AppSettings} from '../helper/app.setting';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {Observable, of, Subject} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 import {Router} from '@angular/router';
 
@@ -54,6 +54,14 @@ export class SubjectsService {
             );
     }
 
+    addSubject(newSubject: any): Observable<ISubject> {
+        console.log(newSubject);
+        return this._httpService.post(`${this.apiUrl}`, newSubject, this.options)
+            .pipe(
+                tap((subject: ISubject) => console.log(`inserted subject = ${JSON.stringify(subject)}`)),
+                catchError(this.handleError<any>('addSubject'))
+            );
+    }
 
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
@@ -61,5 +69,4 @@ export class SubjectsService {
             return of(result as T);
         };
     }
-
 }

@@ -4,6 +4,8 @@
     <div class="container-fluid">
         <subjects-list
                 [userLogin]="userLogin"
+                (onEditSubject)="onEditSubject($event)"
+                [currentSubject]="currentSubject"
         ></subjects-list>
     </div>
 </div>
@@ -21,6 +23,9 @@
                     <div class="card">
                         <subjects-form
                                 [userLogin]="userLogin"
+                                [selectedSubject]="selectedSubject"
+                                [edittingSubject]="edittingSubject"
+                                (onSubmit)="onSubmit($event)"
                         ></subjects-form>
                     </div>
                 </div>

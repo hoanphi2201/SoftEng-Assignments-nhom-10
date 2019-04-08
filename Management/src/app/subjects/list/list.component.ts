@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges} from '@angular/core';
 import {PagerService} from './../../shared/services/pager.service';
 import {showNotification, showAlert, SwalConfirm} from './../../shared/helper/notification';
 
@@ -16,30 +16,104 @@ import {NgProgress} from 'ngx-progressbar';
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css'],
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnChanges {
     loading: boolean = false;
-    pagedItems: ISubject [] = [];
-    subjects: ISubject [] = [];
+    subjectSelect: string = 'allvalue';
     statusSelect: string = 'all';
     sortType: string = 'asc';
     sortField: string = 'name';
     keyword: string = '';
+    subjects: ISubject[];
     statuses: any[] = [
-        {value: 'active', viewValue: 'active'},
-        {value: 'inactive', viewValue: 'inactive'},
+        { value: 'active', viewValue: 'active' },
+        { value: 'inactive', viewValue: 'inactive' },
     ];
-    pager: any = {};
     dataTablesLength: number[] = [5, 10, 20, 50, 100];
     tablesLength: number = 10; private allItems: ISubject[];
-    currentNumberSubjectOnPage: number = this.tablesLength;
+    currentNumberSubjectOnPage = this.tablesLength;
+    pager: any = {};
+    pagedItems: ISubject[];
     selectAll: boolean = false;
     @Input('userLogin') userLogin: any;
+
+    @Input('currentSubject') currentSubject: ISubject;
 
     constructor(
         private _subjectService: SubjectsService,
         private pagerService: PagerService,
         private router: Router,
         public ngProgress: NgProgress) {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.currentSubject !== undefined) {
+
+            const objSubject: any = {
+                name: this.currentSubject.name,
+                content: this.currentSubject.content,
+                slug: this.currentSubject.slug,
+                id: '',
+                ordering: this.currentSubject.ordering,
+                status: this.currentSubject.status,
+
+                modified: {
+                    user_id: 'duykypaul',
+                    user_name: 'duykypaul',
+                    time: Date.now()
+                },
+
+                created: {
+                    user_id: 'duykypaul',
+                    user_name: 'duykypaul',
+                    time: Date.now()
+                }
+            };
+
+            // this._subjectService.deleteSubject(this.currentSubject._id).subscribe(_ => {
+            //     this.pagedItems = this.pagedItems.filter(eachSubject => eachSubject._id !== this.currentSubject._id);
+            // });
+
+            let isAdd = true;
+            this.allItems.map(value => {
+                if (value._id === this.currentSubject._id) {
+                    isAdd = false;
+                    value.status = objSubject.status;
+                    value.name = objSubject.name;
+                    value.slug = objSubject.slug;
+                    value.ordering = objSubject.ordering;
+                    value.content = objSubject.content;
+                    objSubject.id = value._id;
+                    this._subjectService.addSubject(objSubject).subscribe(
+                        insertedSubject => {},
+                        error => this.reloadPageIfError(),
+                        () => {
+                            showAlert('success',
+                                'Success' ,
+                                'Click to continue !',
+                                false,
+                                'btn btn-success');
+                            $('#noticeModal').modal('hide');
+                            return;
+                        });
+                }
+            });
+            if (isAdd) {
+                this._subjectService.addSubject(objSubject).subscribe(
+                    insertedSubject => {
+                        this.pagedItems.push(insertedSubject);
+                    },
+                    error => this.reloadPageIfError(),
+                    () => {
+                        showAlert('success',
+                            'Success' ,
+                            'Click to continue !',
+                            false,
+                            'btn btn-success');
+                        $('#noticeModal').modal('hide');
+                        return;
+                    });
+            }
+        }
+    }
     ngOnInit(): void {
         this.getItems(this.statusSelect, this.sortField, this.sortType, this.keyword);
         this.getSubject();
@@ -56,6 +130,7 @@ export class ListComponent implements OnInit {
                     this.allItems = data;
                     showNotification('top', 'right', 1000, 'Have ' + this.allItems.length + ' subject(s)');
                     this.setPage(this.pager.currentPage);
+                    this.selectAll = false;
                 },
                 error => this.reloadPageIfError(),
                 () => {
@@ -92,9 +167,7 @@ export class ListComponent implements OnInit {
         this.sortType = this.sortType === 'asc' ? 'desc' : 'asc';
         this.sortField = sortField;
         this.getItems(this.statusSelect, this.sortField, this.sortType, this.keyword);
-        setTimeout(() => {
-            this.selectAll = false;
-        }, 1000);
+
     }
 
     displaySortBy(sortField) {
@@ -213,6 +286,38 @@ export class ListComponent implements OnInit {
                 // this.loading = false;
             }
         );
+    }
+
+    @Output('onEditSubject') editSubject = new EventEmitter<ISubject>();
+
+    openForm(id: string) {
+        let subject: ISubject = {
+            name: null,
+            status: null,
+            slug: null,
+            ordering: null,
+            _id: null,
+            content: null,
+            created: {
+                user_id: null,
+                user_name: null,
+                time: null
+            },
+            modified: {
+                user_id: null,
+                user_name: null,
+                time: null
+            }
+        };
+        this.allItems.forEach((value, index) => {
+            if (value._id === id) {
+                subject = value;
+                return;
+            }
+        });
+        // create copy object subject
+        const copySubject = Object.assign({}, subject);
+        this.editSubject.emit(copySubject);
     }
 
     reloadPageIfError() {
