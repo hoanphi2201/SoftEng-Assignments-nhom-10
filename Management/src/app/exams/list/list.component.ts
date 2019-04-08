@@ -69,6 +69,7 @@ export class ListComponent implements OnInit {
         this._examService.getItems(subject, status, sort_field, sort_type, keyword)
             .subscribe(
                 data => {
+                    this.selectAll = false;
                     this.allItems = data;
                     this.allItems.map((item) => {
                         item.selected = false;
@@ -168,10 +169,11 @@ export class ListComponent implements OnInit {
         this._examService.changeStatus(id, objExam)
             .subscribe(
                 data => {
-                    this.pagedItems.map((exam, i) => {
+                    this.pagedItems.map(exam => {
                         if (exam._id === id) {
-                            const newStatus = this.pagedItems[i].status === 'active' ? 'inactive' : 'active';
-                            this.pagedItems[i].status = newStatus;
+                            const newStatus = exam.status === 'active' ? 'inactive' : 'active';
+                            exam.status = newStatus;
+                            exam.modified = objExam.modified;
                         }
                     });
                 },
@@ -199,7 +201,8 @@ export class ListComponent implements OnInit {
                     this.pagedItems.map((exam, i) => {
                         if (exam._id === id) {
                             const newSpecial = this.pagedItems[i].special === 'active' ? 'inactive' : 'active';
-                            this.pagedItems[i].special = newSpecial;
+                            exam.status = newSpecial;
+                            exam.modified = objExam.modified;
                         }
                     });
                 },
@@ -312,6 +315,9 @@ export class ListComponent implements OnInit {
             });
             if (isAdd) {
                 this.allItems.push(submitedExam);
+                if (this.pager.currentPage === this.pager.totalPages) {
+                    this.pagedItems.push(submitedExam);
+                }
             }
         });
     }

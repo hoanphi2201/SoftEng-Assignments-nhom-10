@@ -74,10 +74,12 @@
                 </label>
                 <div class="fileinput fileinput-new text-center" data-provides="fileinput">
                     <div class="fileinput-new thumbnail">
-                        <img *ngIf="!currentExam._id" width="200px" height="200px" src="../../assets/img/placeholder.jpg">
+                        <img *ngIf="!currentExam._id" width="200px" height="200px"
+                             src="../../assets/img/placeholder.jpg">
                     </div>
-                    <div *ngIf="currentExam._id" [innerHTML]="currentExam.thumb | avatar : '': '/exams/': 'no-thumb.png'"
-                    class="fileinput-new thumbnail"></div>
+                    <div *ngIf="currentExam._id"
+                         [innerHTML]="currentExam.thumb | avatar : '': '/exams/': 'no-thumb.png'"
+                         class="fileinput-new thumbnail"></div>
                     <div class="fileinput-preview fileinput-exists thumbnail "></div>
                     <div>
                         <span class="btn btn-round btn-rose btn-file">
@@ -278,27 +280,31 @@
                 <nouislider [connect]="false" [min]="0" [max]="100" [step]="5"
                             [(ngModel)]="simpleSlider"
                             formControlName="number_questions"
-                            (change)="onChangeNumOfQuestion($event)" name="nouislider" [tooltips]="true" class="slider"></nouislider>
+                            (change)="onChangeNumOfQuestion($event)" name="nouislider" [tooltips]="true"
+                            class="slider"></nouislider>
 
             </div>
         </div>
         <div class="row">
             <legend>Answers</legend>
-            <div  class="col-md-2 col-sm-4" *ngFor="let item of currentExam.answers;let index = index;">
-                <label class="control-label">Question {{item.number}}:
-                    <span class="star">*</span>
-                </label>
-                <input  [value]="item.value"
-                        (keyup)="currentExam.answers[index].value = $event.target.value"
-                        formControlName="answer"
-                        type="text"
-                        class="form-control">
+            <div class="col-md-2 col-sm-4" *ngFor="let item of currentExam.answers;let index = index;">
+                <div class="form-group label-floating">
+                    <label class="control-label">Question {{item.number}}:
+                        <span class="star">*</span>
+                    </label>
+                    <input [value]="item.value"
+                           (keyup)="currentExam.answers[index].value = $event.target.value"
+                           formControlName="answer"
+                           type="text"
+                           class="form-control">
+                </div>
             </div>
         </div>
     </div>
     <div class="modal-footer text-center">
-        <button (click)="onSubmitExam()" [disabled]="formExam.invalid" type="button" class="btn btn-primary btn-round"><i
-                class="material-icons">person_add</i>
+        <button (click)="onSubmitExam()" [disabled]="formExam.invalid" type="button" class="btn btn-primary btn-round">
+            <i
+                    class="material-icons">person_add</i>
             Submit
         </button>
     </div>

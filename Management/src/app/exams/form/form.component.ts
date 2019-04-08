@@ -29,7 +29,6 @@ export class FormComponent implements OnInit {
     @Input() set seletedExam(seletedExam: IExam) {
         if (seletedExam) {
             this.currentExam = seletedExam;
-            console.log(this.currentExam);
             if (this.clearfileinputThumb) {
                 this.clearfileinputThumb.nativeElement.click();
             }
