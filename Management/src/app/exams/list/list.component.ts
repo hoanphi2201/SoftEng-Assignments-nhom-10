@@ -304,6 +304,7 @@ export class ListComponent implements OnInit {
             this.allItems.map(value => {
                 if (value._id === submitedExam._id) {
                     isAdd = false;
+                    value.name = submitedExam.name;
                     value.status = submitedExam.status;
                     value.special = submitedExam.special;
                     value.number_questions = submitedExam.number_questions;

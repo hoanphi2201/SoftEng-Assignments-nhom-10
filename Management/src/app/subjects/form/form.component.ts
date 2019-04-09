@@ -60,12 +60,15 @@ export class FormComponent implements OnInit {
         if (this.formSubject.valid) {
             const subject: ISubject = this.formSubject.value;
             subject._id = id;
-            this.currentSubject.emit(subject);
+            const copySubject = Object.assign({}, subject);
+            this.currentSubject.emit(copySubject);
+            console.log('this.currentSubject: ' + this.currentSubject);
+            console.log("subject: " + subject);
         } else {
             validateAllFormFields(this.formSubject);
         }
         this.edittingSubject = false;
-        this.ngOnInit();
+        
     }
 
     reloadPageIfError() {

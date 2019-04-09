@@ -30,6 +30,6 @@ export class SubjectsComponent implements OnInit {
     }
     onSubmit(item: ISubject) {
         this.currentSubject = item;
-        // console.log(this.currentSubject);
+        console.log(this.currentSubject);
     }
 }

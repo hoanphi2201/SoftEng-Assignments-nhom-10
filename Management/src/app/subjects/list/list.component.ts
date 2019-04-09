@@ -75,6 +75,7 @@ export class ListComponent implements OnInit, OnChanges {
             let isAdd = true;
             this.allItems.map(value => {
                 if (value._id === this.currentSubject._id) {
+                    console.log('this.currentSubject._id: ' + this.currentSubject._id);
                     isAdd = false;
                     value.status = objSubject.status;
                     value.name = objSubject.name;
