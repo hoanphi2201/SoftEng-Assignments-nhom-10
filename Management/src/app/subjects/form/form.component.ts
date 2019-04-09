@@ -22,10 +22,10 @@ export class FormComponent implements OnInit {
         {value: 'inactive', viewValue: 'inactive'},
     ];
     @Input('userLogin') userLogin: any;
+
     @Input() selectedSubject: ISubject;
     @Input() edittingSubject: boolean;
 
-    
 
     constructor(
         private _formBuilder: FormBuilder,
@@ -54,7 +54,7 @@ export class FormComponent implements OnInit {
         };
     }
 
-    @Output("onSubmit ") currentSubject = new EventEmitter<ISubject>();
+    @Output("onSubmit") currentSubject = new EventEmitter<ISubject>();
 
     onSubmitSubject(id: string = '') {
         if (this.formSubject.valid) {
@@ -65,7 +65,6 @@ export class FormComponent implements OnInit {
             validateAllFormFields(this.formSubject);
         }
         this.edittingSubject = false;
-        this.ngOnInit();
     }
 
     reloadPageIfError() {

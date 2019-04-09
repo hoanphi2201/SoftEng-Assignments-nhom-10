@@ -34,6 +34,7 @@ export class ListComponent implements OnInit, OnChanges {
     pager: any = {};
     pagedItems: ISubject[];
     selectAll: boolean = false;
+    
     @Input('userLogin') userLogin: any;
 
     @Input('currentSubject') currentSubject: ISubject;
@@ -43,10 +44,21 @@ export class ListComponent implements OnInit, OnChanges {
         private pagerService: PagerService,
         private router: Router,
         public ngProgress: NgProgress) {}
+    
+    viewAfterSubmit(){
+        showAlert('success',
+                  'Success' ,
+                  'Click to continue !',
+                  false,
+                  'btn btn-success');
+        $('#noticeModal').modal('hide');
+        return;
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log('changes');
         if (this.currentSubject !== undefined) {
-
+            console.log('start');
             const objSubject: any = {
                 name: this.currentSubject.name,
                 content: this.currentSubject.content,
@@ -68,13 +80,13 @@ export class ListComponent implements OnInit, OnChanges {
                 }
             };
 
-            // this._subjectService.deleteSubject(this.currentSubject._id).subscribe(_ => {
-            //     this.pagedItems = this.pagedItems.filter(eachSubject => eachSubject._id !== this.currentSubject._id);
-            // });
-
-            let isAdd = true;
+            let isAdd: boolean = true;
             this.allItems.map(value => {
+                console.log('map');
+                console.log('this.currentSubject._id: ' + this.currentSubject._id);
                 if (value._id === this.currentSubject._id) {
+                    console.log('id');
+                    console.log('value._id: ' + value._id);
                     isAdd = false;
                     value.status = objSubject.status;
                     value.name = objSubject.name;
@@ -83,33 +95,25 @@ export class ListComponent implements OnInit, OnChanges {
                     value.content = objSubject.content;
                     objSubject.id = value._id;
                     this._subjectService.addSubject(objSubject).subscribe(
-                        insertedSubject => {},
+                        insertedSubject => {
+                            console.log(insertedSubject);
+                        },
                         error => this.reloadPageIfError(),
                         () => {
-                            showAlert('success',
-                                'Success' ,
-                                'Click to continue !',
-                                false,
-                                'btn btn-success');
-                            $('#noticeModal').modal('hide');
-                            return;
+                            this.viewAfterSubmit();
                         });
                 }
             });
+            console.log(isAdd);
             if (isAdd) {
                 this._subjectService.addSubject(objSubject).subscribe(
                     insertedSubject => {
                         this.pagedItems.push(insertedSubject);
+                        console.log(insertedSubject);
                     },
                     error => this.reloadPageIfError(),
                     () => {
-                        showAlert('success',
-                            'Success' ,
-                            'Click to continue !',
-                            false,
-                            'btn btn-success');
-                        $('#noticeModal').modal('hide');
-                        return;
+                        this.viewAfterSubmit();
                     });
             }
         }
