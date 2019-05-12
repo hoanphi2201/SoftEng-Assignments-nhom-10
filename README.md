@@ -69,6 +69,7 @@
  - Giúp nhóm phát triển kỹ năng lập trình web.
  - Giúp áp dụng kiến thức được học trong môn CNPM
  ### Deloy và triển khai sản phẩm
+  Sản phẩm được deloy server sử dụng EC2, client sử dụng S3 được miễn phí 1 năm bởi amazon 
   + >Trang chủ: http://luyenthi365.xyz
   + >Trang quản: trị [Link](http://webthi-angular.s3-website-ap-southeast-1.amazonaws.com)
   + >Link dự phòng: [Link](http://luyenthi365.xyz.s3-website-ap-southeast-1.amazonaws.com)
