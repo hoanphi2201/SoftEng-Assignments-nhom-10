@@ -68,3 +68,11 @@
  - Tạo ra một ứng dụng đáp ứng nhu cầu dạy và học của học sinh và giáo viên
  - Giúp nhóm phát triển kỹ năng lập trình web.
  - Giúp áp dụng kiến thức được học trong môn CNPM
+ ### Deloy và triển khai sản phẩm
+  + >Trang chủ: http://luyenthi365.xyz
+  + >Trang quản: trị [Link](http://webthi-angular.s3-website-ap-southeast-1.amazonaws.com)
+  + >Link dự phòng: [Link](http://luyenthi365.xyz.s3-website-ap-southeast-1.amazonaws.com)
+ 
+### Tài liệu dự án
+  + >Tài liệu kỹ thuật phần mềm[Link]()
+  + >Tài liệu hướng dẫn sử dụng [Youtube]()
