@@ -76,4 +76,4 @@
  
 ### Tài liệu dự án
   + >Tài liệu kỹ thuật phần mềm[Link]()
-  + >Tài liệu hướng dẫn sử dụng [Youtube]()
+  + >Tài liệu hướng dẫn sử dụng [Youtube](https://youtu.be/-578NHzXQo4)
