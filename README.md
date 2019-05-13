@@ -3,10 +3,10 @@
 ## Nhóm dự án: Nhóm 10
 ### Thành viên
 
- - [Phí Xuân Hoàn](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/PhiXuanHoan/baocao.md) - 17020759
- - [Trần Tiến Đức](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/TranTienDuc/baocao.md) - 17020701
- - [Lê Công Kỳ](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/LeCongKy/baocao.md) - 17020842
- - [Nguyễn Trường Giang](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/NguyenTruongGiang/baocao.md) - 17020706
+ - [Phí Xuân Hoàn - 17020759](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/PhiXuanHoan/baocao.md)
+ - [Trần Tiến Đức - 17020701](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/TranTienDuc/baocao.md)
+ - [Lê Công Kỳ - 17020842](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/LeCongKy/baocao.md)
+ - [Nguyễn Trường Giang - 17020706](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/NguyenTruongGiang/baocao.md)
  
  ### Deloy và triển khai sản phẩm
   Sản phẩm được deloy server sử dụng EC2, client sử dụng S3 được miễn phí 1 năm bởi amazon 
