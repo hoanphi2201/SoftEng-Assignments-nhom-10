@@ -15,7 +15,7 @@
   + >Link dự phòng: [Link](http://luyenthi365.xyz.s3-website-ap-southeast-1.amazonaws.com)
  
 ### Tài liệu dự án
-  + >Tài liệu kỹ thuật phần mềm: [Link](https://drive.google.com/file/d/1yT_7jUChjfXZSFd2J6tUXnWcbZWxDLlP/view?usp=sharing)
+  + >Tài liệu kỹ thuật phần mềm: [Link](https://drive.google.com/file/d/1eEWwFZwnDV7SE5QCx8d3h5DelDF4J32p/view?usp=sharing)
   + >Tài liệu hướng dẫn sử dụng và demo sản : Trang người dùng [Youtube](https://youtu.be/-578NHzXQo4) Trang quản trị [Youtube](https://youtu.be/KPCbF-u5R0U) 
 
 ### Tên ứng dụng: Thi trắc nghiệm THPT quốc gia
