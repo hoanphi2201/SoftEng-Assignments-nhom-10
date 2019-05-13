@@ -2,12 +2,12 @@
 # Công nghệ phềm INT2208 8 - 2018-2019 
 ## Nhóm dự án: Nhóm 10
 ### Thành viên
-```
- * Phí Xuân Hoàn - 17020759
- * Trần Tiến Đức - 17020701
- * Lê Công Kỳ - 17020842
- * Nguyễn Trường Giang - 17020706
-```
+
+ - [Phí Xuân Hoàn](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/PhiXuanHoan/baocao.md) - 17020759
+ - [Trần Tiến Đức](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/TranTienDuc/baocao.md) - 17020701
+ - [Lê Công Kỳ](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/LeCongKy/baocao.md) - 17020842
+ - [Nguyễn Trường Giang](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/NguyenTruongGiang/baocao.md) - 17020706
+ 
  ### Deloy và triển khai sản phẩm
   Sản phẩm được deloy server sử dụng EC2, client sử dụng S3 được miễn phí 1 năm bởi amazon 
   + >Trang chủ: http://luyenthi365.xyz
@@ -78,4 +78,5 @@
  - Tạo ra một ứng dụng đáp ứng nhu cầu dạy và học của học sinh và giáo viên
  - Giúp nhóm phát triển kỹ năng lập trình web.
  - Giúp áp dụng kiến thức được học trong môn CNPM
+### Chi tiết việc phân chia Userstory và sprint [Link](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/nhom-10/README.md)
 
