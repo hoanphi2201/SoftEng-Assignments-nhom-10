@@ -75,5 +75,5 @@
   + >Link dự phòng: [Link](http://luyenthi365.xyz.s3-website-ap-southeast-1.amazonaws.com)
  
 ### Tài liệu dự án
-  + >Tài liệu kỹ thuật phần mềm[Link]()
-  + >Tài liệu hướng dẫn sử dụng [Youtube](https://youtu.be/-578NHzXQo4)
+  + >Tài liệu kỹ thuật phần mềm: [Link](https://drive.google.com/file/d/1yT_7jUChjfXZSFd2J6tUXnWcbZWxDLlP/view?usp=sharing)
+  + >Tài liệu hướng dẫn sử dụng: Trang người dùng [Youtube](https://youtu.be/-578NHzXQo4) Trang quản trị [Youtube](https://youtu.be/KPCbF-u5R0U) 
