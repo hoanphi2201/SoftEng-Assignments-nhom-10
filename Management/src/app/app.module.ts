@@ -52,6 +52,7 @@ import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { AppRoutes } from './app.routing';
 import {AuthGuard} from './shared/guards/auth.guard';
 import {HttpClientModule} from '@angular/common/http';
+import { HeroesComponent } from './heroes/heroes.component';
 
 @NgModule({
   exports: [
@@ -86,7 +87,8 @@ import {HttpClientModule} from '@angular/common/http';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule
-  ]
+  ],
+  declarations: [HeroesComponent]
 })
 export class MaterialModule {}
 

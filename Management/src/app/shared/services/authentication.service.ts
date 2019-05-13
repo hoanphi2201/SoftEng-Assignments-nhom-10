@@ -21,7 +21,7 @@ export class AuthenticationService {
         );
 
     }
-    
+
     loginFacebook(data: any): Observable<any> {
         return this._httpService.post(`${AppSettings.API_ENDPOINT}/auth/user/login-facebook`, data, {
             withCredentials: true
