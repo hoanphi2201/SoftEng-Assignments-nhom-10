@@ -9,7 +9,7 @@
  - [Nguyễn Trường Giang - 17020706](https://github.com/hoanphi2201/INT2208-8-2019/blob/master/NguyenTruongGiang/baocao.md)
  
  ### Deloy và triển khai sản phẩm
-  Sản phẩm được deloy server sử dụng EC2, client sử dụng S3 được miễn phí 1 năm bởi amazon(Do tài khoản aws đang trong trạng thái payment nên link chính đang không hoạt động vui lòng truy cập theo link dự phòng)
+  Sản phẩm được deloy server sử dụng EC2, client sử dụng S3 được miễn phí 1 năm bởi amazon
   + >Trang chủ: http://luyenthi365.xyz
   + >Trang quản: trị [Link](http://webthi-angular.s3-website-ap-southeast-1.amazonaws.com)
   + >Link dự phòng: [Link](http://webluyenthi.s3-website-us-east-1.amazonaws.com)
