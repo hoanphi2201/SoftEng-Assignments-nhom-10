@@ -12,7 +12,7 @@
   Sản phẩm được deloy server sử dụng EC2, client sử dụng S3 được miễn phí 1 năm bởi amazon 
   + >Trang chủ: http://luyenthi365.xyz
   + >Trang quản: trị [Link](http://webthi-angular.s3-website-ap-southeast-1.amazonaws.com)
-  + >Link dự phòng: [Link](http://luyenthi365.xyz.s3-website-ap-southeast-1.amazonaws.com)
+  + >Link dự phòng: [Link](http://webluyenthi.s3-website-us-east-1.amazonaws.com)
  
 ### Tài liệu dự án
   + >Tài liệu kỹ thuật phần mềm: [Link](https://drive.google.com/file/d/1eEWwFZwnDV7SE5QCx8d3h5DelDF4J32p/view?usp=sharing)
