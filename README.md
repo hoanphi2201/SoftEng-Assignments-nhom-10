@@ -1,5 +1,5 @@
 
-# Công nghệ phềm INT2208 8 - 2018-2019 
+# Công nghệ phần  INT2208 8 - 2018-2019 
 ## Nhóm dự án: Nhóm 10
 ### Thành viên
 
